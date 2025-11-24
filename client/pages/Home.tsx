@@ -204,15 +204,18 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/signup"
+              to="/dashboard"
               className="px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold flex items-center justify-center gap-2"
             >
-              Get Started Free
+              Explore Now
               <ArrowRight className="w-5 h-5" />
             </Link>
-            <button className="px-8 py-4 border-2 border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors font-semibold">
-              Schedule a Demo
-            </button>
+            <Link
+              to="/org-submit"
+              className="px-8 py-4 border-2 border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors font-semibold"
+            >
+              Submit Organization
+            </Link>
           </div>
         </div>
       </section>
