@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { handleSearch, handleGetOrganization } from "./routes/search";
 
 export function createServer() {
   const app = express();
@@ -18,6 +19,10 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Organization routes
+  app.get("/api/orgs/search", handleSearch);
+  app.get("/api/orgs/:id", handleGetOrganization);
 
   return app;
 }
