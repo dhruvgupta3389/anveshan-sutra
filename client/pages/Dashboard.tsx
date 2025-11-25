@@ -69,14 +69,14 @@ export default function Dashboard() {
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-3">
               <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">
-                Step 1 of 3
+                Step 2 of 2
               </span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-3">
-              Find Organizations
+              Search Your Organization
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
-              Search through our verified database of NGOs, foundations, and incubators. Use filters to narrow down by focus area and region.
+              Find your organization in our database or discover other verified partners. Use filters to narrow down by focus area and region.
             </p>
           </div>
 
