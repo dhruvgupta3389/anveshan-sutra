@@ -8,6 +8,29 @@ export interface DemoResponse {
   message: string;
 }
 
+export interface SubmitOrganizationRequest {
+  name: string;
+  type: "NGO" | "Foundation" | "Incubator" | "CSR" | "Social Enterprise";
+  website?: string;
+  headquarters: string;
+  region: string;
+  focusAreas: string[];
+  mission: string;
+  description: string;
+  fundingType?: "grant" | "provider" | "recipient" | "mixed";
+  targetBeneficiaries?: string[];
+  partnerHistory?: string[];
+  projects?: {
+    title: string;
+    year: number;
+    description: string;
+  }[];
+}
+
+export interface SubmitOrganizationResponse extends SearchResult {
+  id: string;
+}
+
 export interface Organization {
   id: string;
   name: string;
