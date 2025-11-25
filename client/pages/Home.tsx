@@ -91,17 +91,17 @@ export default function Home() {
               {/* Big CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
                 <Link
-                  to="/dashboard"
+                  to="/org-submit"
                   className="px-8 py-5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors font-bold text-lg sm:text-xl flex items-center justify-center gap-3 shadow-lg"
                 >
-                  Start Searching Now
+                  Submit Your Organization
                   <ArrowRight className="w-6 h-6" />
                 </Link>
                 <Link
                   to="/dashboard"
                   className="px-8 py-5 border-2 border-primary text-primary rounded-xl hover:bg-primary/5 transition-colors font-bold text-lg sm:text-xl text-center"
                 >
-                  Browse Organizations
+                  Search Organizations
                 </Link>
               </div>
 
@@ -286,24 +286,24 @@ export default function Home() {
       <section className="py-24 px-4 sm:px-6 bg-gradient-to-r from-primary/10 to-accent/10">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-5xl sm:text-6xl font-bold text-foreground mb-6">
-            Ready to Find Your Partners?
+            Ready to Join the Network?
           </h2>
           <p className="text-xl sm:text-2xl text-muted-foreground mb-10">
             Join NGOs across India who are discovering the right collaborators with Anveshan.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/dashboard"
+              to="/"
               className="px-8 sm:px-10 py-5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors font-bold text-lg sm:text-xl flex items-center justify-center gap-3 shadow-lg"
             >
-              Start Exploring Now
+              Submit Your Organization
               <ArrowRight className="w-6 h-6" />
             </Link>
             <Link
-              to="/org-submit"
+              to="/dashboard"
               className="px-8 sm:px-10 py-5 border-2 border-primary text-primary rounded-xl hover:bg-primary/5 transition-colors font-bold text-lg sm:text-xl"
             >
-              Submit Your Organization
+              Search Organizations
             </Link>
           </div>
         </div>
