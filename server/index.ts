@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleSearch, handleGetOrganization } from "./routes/search";
+import { handleSubmitOrganization } from "./routes/submit";
 
 export function createServer() {
   const app = express();
@@ -21,6 +22,7 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // Organization routes
+  app.post("/api/orgs/submit", handleSubmitOrganization);
   app.get("/api/orgs/search", handleSearch);
   app.get("/api/orgs/:id", handleGetOrganization);
 
