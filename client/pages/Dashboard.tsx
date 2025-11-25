@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, Plus, Heart, Clock, AlertCircle, Ring } from "lucide-react";
+import { Search, Plus, MapPin, Tag, AlertCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
@@ -56,7 +56,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    // Load all organizations on mount
     handleSearch();
   }, []);
 
@@ -64,233 +63,248 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="pt-28 pb-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          {/* Welcome Section */}
+      <main className="pt-24 pb-20 px-4 sm:px-6">
+        <div className="container mx-auto max-w-7xl">
+          {/* Page Header with Step Guidance */}
           <div className="mb-12">
-            <h1 className="text-display-md mb-2 text-foreground">Dashboard</h1>
-            <p className="text-lg text-muted-foreground">
-              Search for organizations, view alignments, and discover
-              partnership opportunities.
+            <div className="flex items-center gap-2 mb-3">
+              <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">
+                Step 1 of 3
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-3">
+              Find Organizations
+            </h1>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl">
+              Search through our verified database of NGOs, foundations, and incubators. Use filters to narrow down by focus area and region.
             </p>
           </div>
 
-          {/* Search Section */}
-          <div className="mb-12 p-6 bg-card rounded-xl border border-border">
-            <div className="mb-6">
-              <div className="relative">
-                <Search className="absolute left-4 top-3.5 w-5 h-5 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search by organization name, mission, or focus area..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="w-full pl-12 pr-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-
-            {/* Filters */}
-            <div className="grid md:grid-cols-3 gap-4 mb-6">
+          {/* Big Prominent Search Section */}
+          <div className="mb-16 p-8 sm:p-10 bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border-2 border-primary/20">
+            <div className="space-y-6">
+              {/* Main Search Bar */}
               <div>
-                <label className="block text-sm font-semibold text-foreground mb-2">
-                  Focus Area
+                <label className="block text-base font-semibold text-foreground mb-3">
+                  Search Organizations
                 </label>
-                <select
-                  value={focusArea}
-                  onChange={(e) => setFocusArea(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <option value="">All Focus Areas</option>
-                  {focusAreas.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <Search className="absolute left-5 top-4 w-6 h-6 text-primary" />
+                  <input
+                    type="text"
+                    placeholder="E.g., education, health, women empowerment, Uttar Pradesh..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="w-full pl-16 pr-5 py-4 rounded-xl border-2 border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-foreground mb-2">
-                  Region
-                </label>
-                <select
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <option value="">All Regions</option>
-                  {regions.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-                </select>
+              {/* Filters */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-base font-semibold text-foreground mb-3">
+                    Focus Area (Optional)
+                  </label>
+                  <select
+                    value={focusArea}
+                    onChange={(e) => setFocusArea(e.target.value)}
+                    className="w-full px-5 py-4 rounded-xl border-2 border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base font-medium"
+                  >
+                    <option value="">All Focus Areas</option>
+                    {focusAreas.map((area) => (
+                      <option key={area} value={area}>
+                        {area}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-base font-semibold text-foreground mb-3">
+                    Region (Optional)
+                  </label>
+                  <select
+                    value={region}
+                    onChange={(e) => setRegion(e.target.value)}
+                    className="w-full px-5 py-4 rounded-xl border-2 border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base font-medium"
+                  >
+                    <option value="">All Regions</option>
+                    {regions.map((r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div className="flex items-end">
-                <button
-                  onClick={handleSearch}
-                  disabled={isLoading}
-                  className="w-full px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold disabled:opacity-50"
-                >
-                  {isLoading ? "Searching..." : "Search"}
-                </button>
-              </div>
+              {/* Search Button */}
+              <button
+                onClick={handleSearch}
+                disabled={isLoading}
+                className="w-full px-8 py-4 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              >
+                {isLoading ? "Searching..." : "Search Organizations"}
+              </button>
             </div>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="p-6 bg-card rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground mb-2">
-                Organizations Found
-              </p>
-              <p className="text-3xl font-bold text-foreground">
-                {results.length}
-              </p>
+          {/* Results Stats */}
+          {hasSearched && (
+            <div className="grid sm:grid-cols-3 gap-4 mb-12">
+              <div className="p-6 sm:p-8 bg-card rounded-xl border-2 border-border">
+                <p className="text-sm sm:text-base text-muted-foreground font-semibold mb-2">
+                  Organizations Found
+                </p>
+                <p className="text-4xl sm:text-5xl font-bold text-primary">
+                  {results.length}
+                </p>
+              </div>
+              <div className="p-6 sm:p-8 bg-card rounded-xl border-2 border-border">
+                <p className="text-sm sm:text-base text-muted-foreground font-semibold mb-2">
+                  Verified
+                </p>
+                <p className="text-4xl sm:text-5xl font-bold text-accent">
+                  {results.filter((r) => r.verificationStatus === "verified").length}
+                </p>
+              </div>
+              <div className="p-6 sm:p-8 bg-card rounded-xl border-2 border-border">
+                <p className="text-sm sm:text-base text-muted-foreground font-semibold mb-2">
+                  Best Match
+                </p>
+                <p className="text-4xl sm:text-5xl font-bold text-foreground">
+                  {results.length > 0 ? Math.round(results[0].alignmentScore) : "—"}
+                </p>
+              </div>
             </div>
-            <div className="p-6 bg-card rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground mb-2">
-                Verified Organizations
-              </p>
-              <p className="text-3xl font-bold text-foreground">
-                {
-                  results.filter((r) => r.verificationStatus === "verified")
-                    .length
-                }
-              </p>
-            </div>
-            <div className="p-6 bg-card rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground mb-2">
-                Best Alignment
-              </p>
-              <p className="text-3xl font-bold text-primary">
-                {results.length > 0 ? Math.round(results[0].alignmentScore) : 0}
-              </p>
-            </div>
-          </div>
+          )}
 
           {/* Results */}
           {hasSearched && results.length > 0 ? (
-            <div className="space-y-4 mb-12">
-              <h2 className="text-heading-md text-foreground">
-                Search Results
-              </h2>
+            <div className="space-y-6 mb-12">
+              <div className="flex items-baseline gap-3">
+                <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Results</h2>
+                <span className="text-lg text-muted-foreground">
+                  ({results.length} {results.length === 1 ? "organization" : "organizations"})
+                </span>
+              </div>
+
               {results.map((org) => (
-                <Link
+                <div
                   key={org.id}
-                  to={`/org-profile/${org.id}`}
-                  className="block p-6 bg-card rounded-lg border border-border hover:border-primary hover:shadow-lg transition-all"
+                  className="p-6 sm:p-8 bg-card rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-heading-md text-foreground">
+                  <div className="grid sm:grid-cols-12 gap-6">
+                    {/* Main Content */}
+                    <div className="sm:col-span-8">
+                      <div className="flex items-center gap-3 mb-3">
+                        <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
                           {org.name}
                         </h3>
                         {org.verificationStatus === "verified" && (
-                          <span className="px-3 py-1 bg-accent/10 text-accent text-xs rounded-full font-semibold">
-                            Verified
+                          <span className="px-4 py-1.5 bg-accent/10 text-accent text-sm font-bold rounded-lg">
+                            ✓ Verified
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3">
+
+                      <p className="text-base text-muted-foreground mb-4 font-medium">
                         {org.type} • {org.headquarters} • {org.region}
                       </p>
-                      <p className="text-foreground line-clamp-2">
+
+                      <p className="text-base text-foreground mb-4 leading-relaxed line-clamp-2">
                         {org.description}
                       </p>
-                      <div className="flex items-center gap-4 mt-3">
-                        <div className="text-sm text-muted-foreground">
-                          {org.focusAreas.slice(0, 2).join(", ")}
-                        </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {org.focusAreas.slice(0, 2).map((area) => (
+                          <span
+                            key={area}
+                            className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-semibold"
+                          >
+                            {area}
+                          </span>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Alignment Score Ring */}
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="relative w-20 h-20">
-                        <svg className="w-full h-full" viewBox="0 0 80 80">
-                          <circle
-                            cx="40"
-                            cy="40"
-                            r="35"
-                            fill="none"
-                            stroke="hsl(var(--muted))"
-                            strokeWidth="6"
-                          />
-                          <circle
-                            cx="40"
-                            cy="40"
-                            r="35"
-                            fill="none"
-                            stroke="hsl(var(--primary))"
-                            strokeWidth="6"
-                            strokeDasharray={`${
-                              (org.alignmentScore / 100) * (35 * 2 * Math.PI)
-                            } ${35 * 2 * Math.PI}`}
-                            strokeLinecap="round"
-                            transform="rotate(-90 40 40)"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-lg font-bold text-primary">
-                            {Math.round(org.alignmentScore)}
-                          </span>
+                    {/* Alignment Score + Action */}
+                    <div className="sm:col-span-4 flex flex-col items-center gap-4">
+                      {/* Alignment Ring */}
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="relative w-28 h-28">
+                          <svg
+                            className="w-full h-full"
+                            viewBox="0 0 100 100"
+                          >
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="45"
+                              fill="none"
+                              stroke="hsl(var(--muted))"
+                              strokeWidth="5"
+                            />
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="45"
+                              fill="none"
+                              stroke="hsl(var(--primary))"
+                              strokeWidth="5"
+                              strokeDasharray={`${
+                                (org.alignmentScore / 100) *
+                                (45 * 2 * Math.PI)
+                              } ${45 * 2 * Math.PI}`}
+                              strokeLinecap="round"
+                              transform="rotate(-90 50 50)"
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-2xl font-bold text-primary">
+                              {Math.round(org.alignmentScore)}
+                            </span>
+                          </div>
                         </div>
+                        <span className="text-sm text-muted-foreground font-semibold">
+                          Match Score
+                        </span>
                       </div>
-                      <span className="text-xs text-muted-foreground">
-                        Match
-                      </span>
+
+                      {/* View Button */}
+                      <Link
+                        to={`/org-profile/${org.id}`}
+                        className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-bold text-base text-center"
+                      >
+                        View Details
+                      </Link>
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           ) : hasSearched && results.length === 0 ? (
-            <div className="bg-secondary rounded-xl border border-border p-12 text-center">
+            <div className="bg-secondary rounded-xl border-2 border-border p-12 text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertCircle className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-heading-md mb-2 text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
                 No Results Found
               </h2>
-              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                Try adjusting your search filters or keywords to find
-                organizations.
+              <p className="text-lg text-muted-foreground mb-6 max-w-md mx-auto">
+                Try adjusting your search terms or filters. You can also submit your own organization to expand the database.
               </p>
+              <Link
+                to="/org-submit"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-bold text-base"
+              >
+                <Plus className="w-5 h-5" />
+                Submit Organization
+              </Link>
             </div>
           ) : null}
-
-          {/* Sections Placeholder */}
-          <div className="mt-12 grid md:grid-cols-2 gap-6">
-            <div className="p-6 bg-card rounded-lg border border-border">
-              <div className="flex items-center gap-2 mb-4">
-                <Heart className="w-5 h-5 text-accent" />
-                <h3 className="text-heading-md text-foreground">
-                  Saved Organizations
-                </h3>
-              </div>
-              <p className="text-muted-foreground mb-4">
-                No saved organizations yet. Click the heart icon on any
-                organization to save it.
-              </p>
-            </div>
-
-            <div className="p-6 bg-card rounded-lg border border-border">
-              <div className="flex items-center gap-2 mb-4">
-                <Clock className="w-5 h-5 text-primary" />
-                <h3 className="text-heading-md text-foreground">
-                  Recent Activity
-                </h3>
-              </div>
-              <p className="text-muted-foreground mb-4">
-                Your recent searches and actions will appear here.
-              </p>
-            </div>
-          </div>
         </div>
       </main>
 
