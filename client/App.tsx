@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import OrgProfile from "./pages/OrgProfile";
 import Admin from "./pages/Admin";
 import OrgSubmit from "./pages/OrgSubmit";
+import AuthPage from "./pages/AuthPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
@@ -22,6 +23,10 @@ export default function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* ANVESHAN New Platform Routes */}
+            <Route path="/auth" element={<AuthPage />} />
+
+            {/* Legacy Routes (keeping for backward compatibility) */}
             <Route path="/" element={<OrgSubmit />} />
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
