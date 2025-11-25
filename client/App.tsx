@@ -22,7 +22,8 @@ export default function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<OrgSubmit />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/org-profile/:id" element={<OrgProfile />} />
             <Route path="/org-submit" element={<OrgSubmit />} />
