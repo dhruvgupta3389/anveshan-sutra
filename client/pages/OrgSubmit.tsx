@@ -1,11 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Upload, Check } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import { toast } from "sonner";
+import { SubmitOrganizationRequest } from "@shared/api";
+
+interface FormData extends SubmitOrganizationRequest {
+  confirmation: boolean;
+}
+
+const initialFormData: FormData = {
+  name: "",
+  type: "NGO",
+  website: "",
+  headquarters: "",
+  region: "",
+  focusAreas: [],
+  mission: "",
+  description: "",
+  fundingType: "mixed",
+  targetBeneficiaries: [],
+  partnerHistory: [],
+  projects: [],
+  confirmation: false,
+};
 
 export default function OrgSubmit() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const steps = [
     {
@@ -26,6 +51,148 @@ export default function OrgSubmit() {
     { number: 4, title: "Review", description: "Preview and submit" },
   ];
 
+  const focusAreaOptions = [
+    "Education",
+    "Health",
+    "Environment",
+    "Livelihood",
+    "Governance",
+    "Technology",
+  ];
+
+  const regionOptions = [
+    "Northern India",
+    "Southern India",
+    "Eastern India",
+    "Western India",
+  ];
+
+  const handleInputChange = (field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleFocusAreaChange = (area: string, checked: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      focusAreas: checked
+        ? [...prev.focusAreas, area]
+        : prev.focusAreas.filter((a) => a !== area),
+    }));
+  };
+
+  const validateStep = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        if (!formData.name.trim()) {
+          toast.error("Organization name is required");
+          return false;
+        }
+        if (!formData.type) {
+          toast.error("Organization type is required");
+          return false;
+        }
+        return true;
+      case 2:
+        if (!formData.mission.trim()) {
+          toast.error("Mission statement is required");
+          return false;
+        }
+        if (!formData.description.trim()) {
+          toast.error("Description is required");
+          return false;
+        }
+        if (formData.focusAreas.length === 0) {
+          toast.error("At least one focus area is required");
+          return false;
+        }
+        if (!formData.region.trim()) {
+          toast.error("Region is required");
+          return false;
+        }
+        return true;
+      case 3:
+        // Documents are optional for MVP
+        return true;
+      case 4:
+        if (!formData.confirmation) {
+          toast.error("Please confirm the information is accurate");
+          return false;
+        }
+        return true;
+      default:
+        return true;
+    }
+  };
+
+  const handleNext = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep(Math.min(4, currentStep + 1));
+    }
+  };
+
+  const handlePrevious = () => {
+    setCurrentStep(Math.max(1, currentStep - 1));
+  };
+
+  const handleSubmit = async () => {
+    if (!validateStep(4)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const payload: SubmitOrganizationRequest = {
+        name: formData.name,
+        type: formData.type,
+        website: formData.website,
+        headquarters: formData.headquarters,
+        region: formData.region,
+        focusAreas: formData.focusAreas,
+        mission: formData.mission,
+        description: formData.description,
+        fundingType: formData.fundingType,
+        targetBeneficiaries: formData.targetBeneficiaries,
+        partnerHistory: formData.partnerHistory,
+        projects: formData.projects,
+      };
+
+      const response = await fetch("/api/orgs/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to submit organization");
+      }
+
+      const result = await response.json();
+      toast.success(
+        `Organization "${formData.name}" submitted successfully! Redirecting to search...`,
+      );
+
+      // Redirect to dashboard after a brief delay
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to submit organization",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -34,11 +201,11 @@ export default function OrgSubmit() {
         <div className="container mx-auto max-w-4xl">
           {/* Back Button */}
           <Link
-            to="/dashboard"
+            to="/home"
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8 font-medium"
           >
             <ArrowLeft className="w-5 h-5" />
-            Back to Dashboard
+            Back to Home
           </Link>
 
           {/* Header */}
@@ -108,6 +275,8 @@ export default function OrgSubmit() {
                   <input
                     type="text"
                     placeholder="Enter your organization name"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
@@ -116,14 +285,32 @@ export default function OrgSubmit() {
                   <label className="block text-sm font-semibold text-foreground mb-2">
                     Organization Type *
                   </label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
-                    <option>Select organization type</option>
-                    <option>NGO</option>
-                    <option>Foundation</option>
-                    <option>Incubator</option>
-                    <option>CSR Initiative</option>
-                    <option>Social Enterprise</option>
+                  <select
+                    value={formData.type}
+                    onChange={(e) => handleInputChange("type", e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="NGO">NGO</option>
+                    <option value="Foundation">Foundation</option>
+                    <option value="Incubator">Incubator</option>
+                    <option value="CSR">CSR Initiative</option>
+                    <option value="Social Enterprise">Social Enterprise</option>
                   </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-foreground mb-2">
+                    Headquarters *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Uttar Pradesh"
+                    value={formData.headquarters}
+                    onChange={(e) =>
+                      handleInputChange("headquarters", e.target.value)
+                    }
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
                 </div>
 
                 <div>
@@ -133,6 +320,8 @@ export default function OrgSubmit() {
                   <input
                     type="url"
                     placeholder="https://example.com"
+                    value={formData.website}
+                    onChange={(e) => handleInputChange("website", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
@@ -152,6 +341,23 @@ export default function OrgSubmit() {
                   <textarea
                     placeholder="Describe your organization's mission and goals"
                     rows={4}
+                    value={formData.mission}
+                    onChange={(e) => handleInputChange("mission", e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-foreground mb-2">
+                    Description *
+                  </label>
+                  <textarea
+                    placeholder="Describe your organization's work and impact"
+                    rows={4}
+                    value={formData.description}
+                    onChange={(e) =>
+                      handleInputChange("description", e.target.value)
+                    }
                     className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
@@ -161,20 +367,17 @@ export default function OrgSubmit() {
                     Focus Areas *
                   </label>
                   <div className="grid grid-cols-2 gap-3">
-                    {[
-                      "Education",
-                      "Health",
-                      "Environment",
-                      "Livelihood",
-                      "Governance",
-                      "Technology",
-                    ].map((area) => (
+                    {focusAreaOptions.map((area) => (
                       <label
                         key={area}
                         className="flex items-center gap-2 cursor-pointer"
                       >
                         <input
                           type="checkbox"
+                          checked={formData.focusAreas.includes(area)}
+                          onChange={(e) =>
+                            handleFocusAreaChange(area, e.target.checked)
+                          }
                           className="w-4 h-4 rounded border-border"
                         />
                         <span className="text-sm text-foreground">{area}</span>
@@ -185,13 +388,20 @@ export default function OrgSubmit() {
 
                 <div>
                   <label className="block text-sm font-semibold text-foreground mb-2">
-                    Active Regions
+                    Region *
                   </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., Uttar Pradesh, Maharashtra, National"
+                  <select
+                    value={formData.region}
+                    onChange={(e) => handleInputChange("region", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  >
+                    <option value="">Select region</option>
+                    {regionOptions.map((region) => (
+                      <option key={region} value={region}>
+                        {region}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             )}
@@ -202,8 +412,7 @@ export default function OrgSubmit() {
                   Upload Documents
                 </h2>
                 <p className="text-muted-foreground text-sm">
-                  Upload documents to verify your organization. Accepted
-                  formats: PDF, DOC, DOCX
+                  Upload documents to verify your organization. (Optional for MVP)
                 </p>
 
                 <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer">
@@ -237,8 +446,8 @@ export default function OrgSubmit() {
                   Review & Submit
                 </h2>
                 <p className="text-muted-foreground">
-                  Please review your information before submitting. Our
-                  verification team will review within 5-7 business days.
+                  Please review your information before submitting. Your
+                  organization will be listed immediately in search results.
                 </p>
 
                 <div className="bg-secondary rounded-lg p-6 space-y-4">
@@ -247,28 +456,50 @@ export default function OrgSubmit() {
                       Organization Name
                     </span>
                     <span className="font-semibold text-foreground">
-                      Your Organization
+                      {formData.name}
                     </span>
                   </div>
                   <div className="flex justify-between pb-4 border-b border-border">
                     <span className="text-muted-foreground">
                       Organization Type
                     </span>
-                    <span className="font-semibold text-foreground">NGO</span>
+                    <span className="font-semibold text-foreground">
+                      {formData.type}
+                    </span>
+                  </div>
+                  <div className="flex justify-between pb-4 border-b border-border">
+                    <span className="text-muted-foreground">Headquarters</span>
+                    <span className="font-semibold text-foreground">
+                      {formData.headquarters}
+                    </span>
+                  </div>
+                  <div className="flex justify-between pb-4 border-b border-border">
+                    <span className="text-muted-foreground">Region</span>
+                    <span className="font-semibold text-foreground">
+                      {formData.region}
+                    </span>
+                  </div>
+                  <div className="flex justify-between pb-4 border-b border-border">
+                    <span className="text-muted-foreground">Focus Areas</span>
+                    <span className="font-semibold text-foreground">
+                      {formData.focusAreas.join(", ")}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">
                       Verification Status
                     </span>
-                    <span className="font-semibold text-primary">
-                      Pending Review
-                    </span>
+                    <span className="font-semibold text-accent">Verified</span>
                   </div>
                 </div>
 
                 <label className="flex items-center gap-3 p-4 bg-secondary rounded-lg cursor-pointer hover:bg-secondary/80 transition-colors">
                   <input
                     type="checkbox"
+                    checked={formData.confirmation}
+                    onChange={(e) =>
+                      handleInputChange("confirmation", e.target.checked)
+                    }
                     className="w-4 h-4 rounded border-border"
                   />
                   <span className="text-sm text-foreground">
@@ -283,7 +514,7 @@ export default function OrgSubmit() {
           {/* Navigation Buttons */}
           <div className="flex justify-between gap-4">
             <button
-              onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
+              onClick={handlePrevious}
               disabled={currentStep === 1}
               className="px-8 py-3 border-2 border-border text-foreground rounded-lg hover:bg-secondary transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -291,14 +522,18 @@ export default function OrgSubmit() {
             </button>
             {currentStep < 4 ? (
               <button
-                onClick={() => setCurrentStep(Math.min(4, currentStep + 1))}
+                onClick={handleNext}
                 className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold"
               >
                 Next
               </button>
             ) : (
-              <button className="px-8 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-accent/90 transition-colors font-semibold">
-                Submit for Verification
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-8 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-accent/90 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Submitting..." : "Submit for Verification"}
               </button>
             )}
           </div>
