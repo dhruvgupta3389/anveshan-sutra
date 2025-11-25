@@ -1,12 +1,12 @@
 import { RequestHandler } from "express";
-import { SearchParams, SearchResponse, SearchResult } from "@shared/api";
+import { SearchParams, SearchResponse, SearchResult, Organization } from "@shared/api";
 import { mockOrganizations } from "../data/organizations";
+import { supabase } from "../lib/supabase";
 
 function calculateAlignmentScore(
-  orgIndex: number,
+  org: Organization,
   params: SearchParams,
 ): number {
-  const org = mockOrganizations[orgIndex];
   let score = 50; // Base score
 
   // Focus area match
@@ -39,7 +39,54 @@ function calculateAlignmentScore(
   return Math.min(100, Math.max(0, Math.round(score)));
 }
 
-export const handleSearch: RequestHandler = (req, res) => {
+function filterOrganizations(
+  orgs: Organization[],
+  params: SearchParams,
+): Organization[] {
+  return orgs.filter((org) => {
+    // Query filter (name, mission, description)
+    if (params.query) {
+      const query = params.query.toLowerCase();
+      const matchesQuery =
+        org.name.toLowerCase().includes(query) ||
+        org.mission.toLowerCase().includes(query) ||
+        org.description.toLowerCase().includes(query) ||
+        org.focusAreas.some((area) => area.toLowerCase().includes(query));
+
+      if (!matchesQuery) return false;
+    }
+
+    // Focus area filter
+    if (params.focusArea) {
+      const hasArea = org.focusAreas.some(
+        (area) => area.toLowerCase() === params.focusArea?.toLowerCase(),
+      );
+      if (!hasArea) return false;
+    }
+
+    // Region filter
+    if (params.region) {
+      const regionMatch = org.region
+        .toLowerCase()
+        .includes(params.region.toLowerCase());
+      if (!regionMatch) return false;
+    }
+
+    // Funding type filter
+    if (params.fundingType) {
+      if (org.fundingType !== params.fundingType) return false;
+    }
+
+    // Verification status filter
+    if (params.verificationStatus) {
+      if (org.verificationStatus !== params.verificationStatus) return false;
+    }
+
+    return true;
+  });
+}
+
+export const handleSearch: RequestHandler = async (req, res) => {
   try {
     const params: SearchParams = {
       query: (req.query.query as string) || "",
@@ -52,56 +99,30 @@ export const handleSearch: RequestHandler = (req, res) => {
         "alignment",
     };
 
+    let allOrganizations: Organization[] = [...mockOrganizations];
+
+    // Try to fetch from Supabase and merge with mock data
+    if (supabase) {
+      try {
+        const { data: supabaseOrgs, error } = await supabase
+          .from("organizations")
+          .select("*");
+
+        if (!error && supabaseOrgs) {
+          allOrganizations = [...mockOrganizations, ...supabaseOrgs];
+        }
+      } catch (err) {
+        console.warn("Failed to fetch from Supabase, using mock data:", err);
+      }
+    }
+
     // Filter organizations
-    let results = mockOrganizations.filter((org, index) => {
-      // Query filter (name, mission, description)
-      if (params.query) {
-        const query = params.query.toLowerCase();
-        const matchesQuery =
-          org.name.toLowerCase().includes(query) ||
-          org.mission.toLowerCase().includes(query) ||
-          org.description.toLowerCase().includes(query) ||
-          org.focusAreas.some((area) => area.toLowerCase().includes(query));
-
-        if (!matchesQuery) return false;
-      }
-
-      // Focus area filter
-      if (params.focusArea) {
-        const hasArea = org.focusAreas.some(
-          (area) => area.toLowerCase() === params.focusArea?.toLowerCase(),
-        );
-        if (!hasArea) return false;
-      }
-
-      // Region filter
-      if (params.region) {
-        const regionMatch = org.region
-          .toLowerCase()
-          .includes(params.region.toLowerCase());
-        if (!regionMatch) return false;
-      }
-
-      // Funding type filter
-      if (params.fundingType) {
-        if (org.fundingType !== params.fundingType) return false;
-      }
-
-      // Verification status filter
-      if (params.verificationStatus) {
-        if (org.verificationStatus !== params.verificationStatus) return false;
-      }
-
-      return true;
-    });
+    const results = filterOrganizations(allOrganizations, params);
 
     // Map to search results with alignment scores
-    let searchResults: SearchResult[] = results.map((org, index) => ({
+    const searchResults: SearchResult[] = results.map((org) => ({
       ...org,
-      alignmentScore: calculateAlignmentScore(
-        mockOrganizations.indexOf(org),
-        params,
-      ),
+      alignmentScore: calculateAlignmentScore(org, params),
     }));
 
     // Sort results
@@ -117,7 +138,7 @@ export const handleSearch: RequestHandler = (req, res) => {
         break;
       case "recency":
       default:
-        // Assume later organizations are more recent
+        // Keep original order
         break;
     }
 
@@ -133,20 +154,34 @@ export const handleSearch: RequestHandler = (req, res) => {
   }
 };
 
-export const handleGetOrganization: RequestHandler = (req, res) => {
+export const handleGetOrganization: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const org = mockOrganizations.find((o) => o.id === id);
+    let org = mockOrganizations.find((o) => o.id === id);
+
+    // Try to fetch from Supabase if not found in mock data
+    if (!org && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from("organizations")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (!error && data) {
+          org = data;
+        }
+      } catch (err) {
+        console.warn("Failed to fetch from Supabase:", err);
+      }
+    }
 
     if (!org) {
       return res.status(404).json({ error: "Organization not found" });
     }
 
     // Calculate alignment score with empty params (baseline)
-    const alignmentScore = calculateAlignmentScore(
-      mockOrganizations.indexOf(org),
-      {},
-    );
+    const alignmentScore = calculateAlignmentScore(org, {});
 
     const result: SearchResult = {
       ...org,
