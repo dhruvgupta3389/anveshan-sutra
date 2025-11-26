@@ -150,6 +150,10 @@ export default function OrgSubmit() {
     }
   };
 
+  const getTotalSteps = () => {
+    return formData.userRole ? 5 : 1; // If no role selected, only show role selection
+  };
+
   const handlePrevious = () => {
     setCurrentStep(Math.max(1, currentStep - 1));
   };
