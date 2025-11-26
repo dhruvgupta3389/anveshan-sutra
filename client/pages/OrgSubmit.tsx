@@ -96,6 +96,12 @@ export default function OrgSubmit() {
 
   const validateStep = (step: number): boolean => {
     switch (step) {
+      case 0:
+        if (!formData.userRole) {
+          toast.error("Please select whether you are an NGO or Funder");
+          return false;
+        }
+        return true;
       case 1:
         if (!formData.name.trim()) {
           toast.error("Organization name is required");
