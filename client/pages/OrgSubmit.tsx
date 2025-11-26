@@ -699,14 +699,14 @@ export default function OrgSubmit() {
             >
               Previous
             </button>
-            {currentStep < 4 ? (
+            {currentStep < getTotalSteps() - 1 ? (
               <button
                 onClick={handleNext}
                 className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold"
               >
                 Next
               </button>
-            ) : (
+            ) : currentStep === getTotalSteps() - 1 ? (
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
@@ -714,7 +714,7 @@ export default function OrgSubmit() {
               >
                 {isSubmitting ? "Submitting..." : "Submit for Verification"}
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </main>
