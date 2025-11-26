@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import NGODashboard from "./pages/NGODashboard";
 import OrgProfileDetail from "./pages/OrgProfileDetail";
 import PPTViewer from "./pages/PPTViewer";
+import Shortlist from "./pages/Shortlist";
 import Admin from "./pages/Admin";
 import OrgSubmit from "./pages/OrgSubmit";
 import AuthPage from "./pages/AuthPage";
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/dashboard" element={<NGODashboard />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/shortlist" element={<Shortlist />} />
             <Route path="/org-profile/:id" element={<OrgProfileDetail />} />
             <Route path="/ppt/:id" element={<PPTViewer />} />
             <Route path="/org-submit" element={<OrgSubmit />} />
