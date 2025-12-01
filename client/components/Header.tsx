@@ -62,13 +62,6 @@ export default function Header() {
             {/* 3. Desktop Actions */}
             <div className="hidden md:flex items-center gap-2">
               <Link
-                to="/login"
-                className="px-4 py-2 text-sm font-semibold text-foreground hover:text-primary transition-colors rounded-lg hover:bg-secondary/10"
-              >
-                Sign In
-              </Link>
-              
-              <Link
                 to="/org-submit"
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-lg hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95"
               >

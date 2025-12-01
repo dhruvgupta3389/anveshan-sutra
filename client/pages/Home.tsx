@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   CheckCircle2,
   Search,
@@ -12,6 +12,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function Home() {
+  const navigate = useNavigate();
+  
   const steps = [
     {
       number: 1,
@@ -75,13 +77,23 @@ export default function Home() {
       <section className="pt-32 pb-20 px-4 sm:px-6 bg-gradient-to-b from-secondary to-background">
         <div className="container mx-auto max-w-6xl">
           {/* About Us Component - Positioned in top-right corner of hero section */}
-          <div className="absolute top-8 right-4">
-            <Link 
-              to="/about" 
-              className="px-5 py-3 text-foreground font-semibold text-xl hover:underline"
+          <div className="absolute top-8 right-4 z-50 flex gap-2">
+            <Link
+              to="/login"
+              className="px-5 py-3 bg-white text-foreground rounded-xl hover:bg-secondary transition-colors font-bold text-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-lg border border-border"
+            >
+              JOIN
+            </Link>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("About Us button clicked!");
+                navigate("/about");
+              }}
+              className="px-5 py-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors font-bold text-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-lg"
             >
               About Us
-            </Link>
+            </button>
           </div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -141,6 +153,57 @@ export default function Home() {
                   <p className="text-lg text-primary/70 mt-2">
                     Find the right fit instantly
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section id="about-us-section" className="py-24 px-4 sm:px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl sm:text-6xl font-bold text-foreground mb-4">
+              About Anveshan
+            </h2>
+            <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
+              Empowering NGOs through research, collaboration, and innovation
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="p-8 bg-card rounded-2xl border-2 border-border">
+              <h3 className="text-2xl font-bold text-foreground mb-4">
+                Our Mission
+              </h3>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                We are dedicated to strengthening the nonprofit sector through rigorous, independent research that illuminates best practices, challenges, and opportunities. Our mission is to provide NGOs with the insights they need to maximize their impact, optimize their operations, and drive meaningful change in communities worldwide.
+              </p>
+              <h3 className="text-2xl font-bold text-foreground mb-4">
+                Our Vision
+              </h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We envision a world where every NGO has access to high-quality research that empowers them to make data-driven decisions, scale their impact, and create lasting social change. Through our work, we aim to build a more transparent, effective, and collaborative nonprofit ecosystem.
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-8">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-card p-6 rounded-xl border-2 border-border text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">500+</div>
+                  <div className="text-muted-foreground">NGOs Analyzed</div>
+                </div>
+                <div className="bg-card p-6 rounded-xl border-2 border-border text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">50+</div>
+                  <div className="text-muted-foreground">Research Projects</div>
+                </div>
+                <div className="bg-card p-6 rounded-xl border-2 border-border text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">15+</div>
+                  <div className="text-muted-foreground">Countries Covered</div>
+                </div>
+                <div className="bg-card p-6 rounded-xl border-2 border-border text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">100+</div>
+                  <div className="text-muted-foreground">Impact Reports</div>
                 </div>
               </div>
             </div>

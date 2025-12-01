@@ -1,198 +1,196 @@
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import { 
-  Users, 
-  Target, 
-  Heart, 
-  Globe, 
-  Award, 
-  Calendar,
-  ArrowRight
-} from "lucide-react";
+import { Users, Target, TrendingUp, Award, ChevronRight, BookOpen, Globe, Heart } from 'lucide-react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function About() {
+  const [activeTab, setActiveTab] = useState('mission');
+
+  const stats = [
+    { number: '500+', label: 'NGOs Analyzed', icon: Globe },
+    { number: '50+', label: 'Research Projects', icon: BookOpen },
+    { number: '15+', label: 'Countries Covered', icon: TrendingUp },
+    { number: '100+', label: 'Impact Reports', icon: Award }
+  ];
+
   const values = [
     {
-      icon: Heart,
-      title: "Social Impact First",
-      description: "We prioritize meaningful connections that drive positive change in communities."
+      icon: Target,
+      title: 'Evidence-Based Research',
+      description: 'We employ rigorous methodologies to ensure our findings are credible, actionable, and grounded in empirical data.'
     },
     {
-      icon: Target,
-      title: "Precision Matching",
-      description: "Our algorithm ensures you connect with organizations that truly align with your mission."
+      icon: Heart,
+      title: 'Social Impact Focus',
+      description: 'Every research initiative is designed to amplify the effectiveness of NGOs working toward positive social change.'
     },
     {
       icon: Users,
-      title: "Community Building",
-      description: "We foster genuine partnerships that go beyond transactional relationships."
+      title: 'Collaborative Approach',
+      description: 'We partner with NGOs, academia, and communities to create research that reflects diverse perspectives and real-world needs.'
     },
     {
-      icon: Globe,
-      title: "Transparency",
-      description: "All organizations are verified to ensure trust and authenticity in every connection."
+      icon: TrendingUp,
+      title: 'Innovation & Growth',
+      description: 'We constantly evolve our research methods to address emerging challenges in the nonprofit sector.'
     }
   ];
+
+  const tabContent = {
+    mission: {
+      title: 'Our Mission',
+      content: 'We are dedicated to strengthening the nonprofit sector through rigorous, independent research that illuminates best practices, challenges, and opportunities. Our mission is to provide NGOs with the insights they need to maximize their impact, optimize their operations, and drive meaningful change in communities worldwide.'
+    },
+    vision: {
+      title: 'Our Vision',
+      content: 'We envision a world where every NGO has access to high-quality research that empowers them to make data-driven decisions, scale their impact, and create lasting social change. Through our work, we aim to build a more transparent, effective, and collaborative nonprofit ecosystem.'
+    },
+    approach: {
+      title: 'Our Approach',
+      content: 'We combine quantitative analysis, qualitative field research, and participatory methods to understand the complexities of the nonprofit sector. Our interdisciplinary team works closely with NGOs throughout the research process, ensuring our findings are relevant, practical, and actionable for organizations of all sizes.'
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-              Connecting NGOs for Greater Impact
-            </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground mb-10 leading-relaxed">
-              Anveshan bridges the gap between NGOs, foundations, and social enterprises to build stronger partnerships for social change.
-            </p>
-            <Link 
-              to="/org-submit"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold"
-            >
-              Join Our Network
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission Section */}
-      <section className="py-20 px-4 sm:px-6 bg-secondary">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                Our Mission
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                At Anveshan, we believe that collaboration is the key to solving complex social challenges. 
-                Our mission is to empower NGOs by connecting them with the right partners, resources, and opportunities.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We're building a platform where verified organizations can discover each other, assess alignment, 
-                and collaborate more effectively than ever before.
+      <div className="min-h-screen bg-background">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary text-primary-foreground">
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+          <div className="relative max-w-7xl mx-auto px-6 py-24 sm:py-32">
+            <div className="text-center">
+              <h1 className="text-5xl sm:text-6xl font-bold mb-6 tracking-tight">
+                Empowering NGOs Through Research
+              </h1>
+              <p className="text-xl sm:text-2xl text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed">
+                Transforming data into insights that drive social impact and organizational excellence
               </p>
             </div>
-            <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-8">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-border">
-                <blockquote className="text-lg text-foreground italic">
-                  "Alone we can do so little; together we can do so much."
-                </blockquote>
-                <cite className="mt-4 block text-muted-foreground not-italic">
-                  – Helen Keller
-                </cite>
+            {/* JOIN button in top right corner */}
+            <div className="absolute top-8 right-8 flex gap-2">
+              <Link
+                to="/login"
+                className="px-5 py-3 bg-white text-foreground rounded-xl hover:bg-secondary transition-colors font-bold text-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-lg border border-border"
+              >
+                JOIN
+              </Link>
+              <button
+                onClick={() => window.location.hash = '#about-us-section'}
+                className="px-5 py-3 bg-primary-foreground text-primary rounded-xl hover:bg-primary-foreground/90 transition-colors font-bold text-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-foreground/50 shadow-lg"
+              >
+                About Us
+              </button>
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background"></div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="max-w-7xl mx-auto px-6 -mt-12 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            {stats.map((stat, index) => (
+              <div 
+                key={index} 
+                className="bg-card rounded-2xl shadow-lg p-6 text-center border border-border hover:border-primary transition-colors"
+              >
+                <stat.icon className="w-8 h-8 mx-auto mb-3 text-primary" />
+                <div className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-sm sm:text-base text-muted-foreground font-medium">
+                  {stat.label}
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mission/Vision/Approach Tabs */}
+        <div className="max-w-5xl mx-auto px-6 py-20">
+          <div className="bg-card rounded-3xl shadow-xl overflow-hidden border border-border">
+            <div className="flex border-b border-border">
+              {Object.keys(tabContent).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 ${
+                    activeTab === tab
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-foreground hover:bg-secondary'
+                  }`}
+                >
+                  {tabContent[tab].title}
+                </button>
+              ))}
+            </div>
+            <div className="p-8 sm:p-12">
+              <h2 className="text-3xl font-bold text-foreground mb-6">
+                {tabContent[activeTab].title}
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                {tabContent[activeTab].content}
+              </p>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Values Section */}
-      <section className="py-20 px-4 sm:px-6">
-        <div className="container mx-auto max-w-6xl">
+        {/* Values Section */}
+        <div className="max-w-7xl mx-auto px-6 pb-20">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
               Our Core Values
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Principles that guide everything we do at Anveshan
+              The principles that guide our research and partnerships
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => {
-              const Icon = value.icon;
-              return (
-                <div 
-                  key={index}
-                  className="p-6 bg-card rounded-xl border border-border hover:border-primary transition-colors"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-primary" />
+          <div className="grid md:grid-cols-2 gap-8">
+            {values.map((value, index) => (
+              <div 
+                key={index}
+                className="bg-card rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-border group hover:border-primary"
+              >
+                <div className="flex items-start gap-6">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <value.icon className="w-8 h-8 text-primary" />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    {value.title}
-                  </h3>
-                  <p className="text-muted-foreground">
-                    {value.description}
-                  </p>
+                  <div>
+                    <h3 className="text-2xl font-bold text-foreground mb-3">
+                      {value.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
-      </section>
 
-      {/* Journey Section */}
-      <section className="py-20 px-4 sm:px-6 bg-secondary">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Our Journey
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-primary/20 to-secondary/20">
+          <div className="max-w-5xl mx-auto px-6 py-16 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+              Partner With Us
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              From idea to impact
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Join the growing network of NGOs leveraging our research to amplify their impact
             </p>
-          </div>
-          
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-primary transform -translate-x-1/2"></div>
-            
-            <div className="space-y-12 pl-12 md:pl-0">
-              <div className="relative md:w-1/2 md:odd:pr-12 md:even:pl-12 md:even:ml-auto">
-                <div className="absolute -left-10 md:-left-4 md:right-auto w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-primary-foreground" />
-                </div>
-                <div className="p-6 bg-card rounded-xl border border-border">
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    2023: The Idea
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Our founders, experienced NGO professionals, recognized the challenge of finding aligned partners. 
-                    They envisioned a platform that would make partnership discovery seamless and effective.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="relative md:w-1/2 md:odd:pr-12 md:even:pl-12 md:even:ml-auto">
-                <div className="absolute -left-10 md:-left-4 md:right-auto w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <Award className="w-4 h-4 text-primary-foreground" />
-                </div>
-                <div className="p-6 bg-card rounded-xl border border-border">
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    2024: Platform Launch
-                  </h3>
-                  <p className="text-muted-foreground">
-                    After months of development and testing with pilot organizations, we launched Anveshan to the public. 
-                    Today, we connect dozens of organizations across various sectors.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="relative md:w-1/2 md:odd:pr-12 md:even:pl-12 md:even:ml-auto">
-                <div className="absolute -left-10 md:-left-4 md:right-auto w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <Globe className="w-4 h-4 text-primary-foreground" />
-                </div>
-                <div className="p-6 bg-card rounded-xl border border-border">
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    2025: Scaling Impact
-                  </h3>
-                  <p className="text-muted-foreground">
-                    We're expanding our reach across India, continuously improving our matching algorithms, 
-                    and adding new features based on community feedback.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 inline-flex items-center gap-2 shadow-lg hover:shadow-xl">
+              Get In Touch
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
-      </section>
-
+      </div>
+      
       <Footer />
     </div>
   );
