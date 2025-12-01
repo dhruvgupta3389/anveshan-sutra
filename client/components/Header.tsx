@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Search, Plus, ArrowRight, LayoutGrid } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +13,15 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
+  const openTextMaker = () => {
+    window.open('http://localhost:8081/', '_blank');
+  };
 
   return (
     <>
@@ -37,10 +46,10 @@ export default function Header() {
               className="flex items-center gap-3 group"
               onClick={() => setIsMenuOpen(false)}
             >
-              <div className="relative flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl text-primary-foreground shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-all duration-300">
-                <LayoutGrid className="w-5 h-5" />
+              <div className="relative flex items-center justify-center w-10 h-10">
+                <LayoutGrid className="w-5 h-5 text-foreground" />
               </div>
-              <span className="font-bold text-lg tracking-tight text-foreground">
+              <span className="font-bold text-2xl tracking-tight text-foreground">
                 Anveshan
               </span>
             </Link>
@@ -68,6 +77,12 @@ export default function Header() {
                 <Plus className="w-4 h-4" />
                 <span>Submit Org</span>
               </Link>
+              <button
+                onClick={openTextMaker}
+                className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-lg hover:bg-secondary/90 transition-all hover:shadow-lg hover:shadow-secondary/20 active:scale-95"
+              >
+                <span>Summarizer</span>
+              </button>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -105,6 +120,16 @@ export default function Header() {
                 <Plus className="w-5 h-5 text-primary" />
                 Submit Organization
               </Link>
+
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  openTextMaker();
+                }}
+                className="flex items-center gap-3 p-3 rounded-xl text-foreground hover:bg-secondary/10 font-medium transition-colors text-left"
+              >
+                <span className="text-secondary">Summarizer</span>
+              </button>
 
               <div className="h-px bg-border my-2" />
 

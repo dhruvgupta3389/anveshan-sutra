@@ -76,7 +76,16 @@ export default function Home() {
       {/* Hero Section - Large and Inviting */}
       <section className="pt-32 pb-20 px-4 sm:px-6 bg-gradient-to-b from-secondary to-background">
         <div className="container mx-auto max-w-6xl">
-          {/* About Us Component - Positioned in top-right corner of hero section */}
+          {/* Top bar with logo and buttons */}
+          <div className="absolute top-3 left-7 z-100">
+            <div className="w-39 h-20 rounded-full overflow-hidden">
+              <img 
+                src="/Gemini_Generated_Image_8ghzle8ghzle8ghz.png" 
+                alt="Anveshan Logo" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
           <div className="absolute top-8 right-4 z-50 flex gap-2">
             <Link
               to="/login"

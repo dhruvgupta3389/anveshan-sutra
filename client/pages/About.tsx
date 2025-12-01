@@ -69,7 +69,16 @@ export default function About() {
                 Transforming data into insights that drive social impact and organizational excellence
               </p>
             </div>
-            {/* JOIN button in top right corner */}
+            {/* Top bar with logo and buttons */}
+            <div className="absolute top-8 left-8 z-50">
+              <div className="w-20 h-20 rounded-full overflow-hidden">
+                <img 
+                  src="/Gemini_Generated_Image_8ghzle8ghzle8ghz.png" 
+                  alt="Anveshan Logo" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
             <div className="absolute top-8 right-8 flex gap-2">
               <Link
                 to="/login"

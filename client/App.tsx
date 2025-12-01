@@ -16,6 +16,7 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
 import About from "./pages/About";
+import TextMaker from "./pages/TextMaker";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/org-profile/:id" element={<OrgProfileDetail />} />
             <Route path="/ppt/:id" element={<PPTViewer />} />
             <Route path="/org-submit" element={<OrgSubmit />} />
+            <Route path="/textmaker" element={<TextMaker />} />
 
             {/* Legacy Routes (keeping for backward compatibility) */}
             <Route path="/home" element={<Home />} />
