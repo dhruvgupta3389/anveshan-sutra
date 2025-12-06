@@ -1,4 +1,4 @@
--- ANVESHAN Database Schema
+-- Drivya.AI Database Schema
 -- Run these migrations in your Supabase project
 
 -- 1. Focus Areas Table (Controlled Taxonomy)

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* ANVESHAN Color Palette */
+    /* Drivya.AI Color Palette */
     /* #1A1A1D - Deep Dark (backgrounds, text) */
     /* #3B1C32 - Dark Purple (accents, borders) */
     /* #6A1E55 - Purple (primary buttons, key actions) */
@@ -19,7 +19,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 5% 11%;
 
-    /* Primary: ANVESHAN Purple (#6A1E55) */
+    /* Primary: Drivya.AI Purple (#6A1E55) */
     --primary: 315 56% 27%;
     --primary-foreground: 0 0% 100%;
 
@@ -61,7 +61,7 @@
   }
 
   .dark {
-    /* ANVESHAN Dark Mode - Deep purple theme */
+    /* Drivya.AI Dark Mode - Deep purple theme */
     --background: 240 5% 11%;
     --foreground: 0 0% 98%;
 

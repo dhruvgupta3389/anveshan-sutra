@@ -50,7 +50,7 @@ export default function Home() {
       name: "Priya Singh",
       role: "Director, Education NGO",
       quote:
-        "Anveshan cut our partner discovery time from weeks to just hours. The alignment scoring helped us find the perfect CSR partner immediately.",
+        "Driya.AI cut our partner discovery time from weeks to just hours. The alignment scoring helped us find the perfect CSR partner immediately.",
       avatar: "PS",
     },
     {
@@ -81,7 +81,7 @@ export default function Home() {
             <div className="w-39 h-20 rounded-full overflow-hidden">
               <img 
                 src="/Gemini_Generated_Image_8ghzle8ghzle8ghz.png" 
-                alt="Anveshan Logo" 
+                alt="Driya.AI Logo" 
                 className="w-full h-full object-cover"
               />
             </div>
@@ -116,7 +116,7 @@ export default function Home() {
                 Find Your Perfect Partner in Minutes
               </h1>
               <p className="text-xl sm:text-2xl text-muted-foreground mb-8 leading-relaxed">
-                Stop spending weeks searching for the right collaborators. Anveshan uses intelligent matching to connect you with verified organizations that share your mission and goals.
+                Stop spending weeks searching for the right collaborators. Driya.AI uses intelligent matching to connect you with verified organizations that share your mission and goals.
               </p>
 
               {/* Big CTAs */}
@@ -174,7 +174,7 @@ export default function Home() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-20">
             <h2 className="text-5xl sm:text-6xl font-bold text-foreground mb-4">
-              About Anveshan
+              About Driya.AI
             </h2>
             <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Empowering NGOs through research, collaboration, and innovation
@@ -263,12 +263,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Anveshan - Key Benefits */}
+      {/* Why Driya.AI - Key Benefits */}
       <section className="py-24 px-4 sm:px-6 bg-secondary">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-20">
             <h2 className="text-5xl sm:text-6xl font-bold text-foreground mb-4">
-              Why NGOs Love Anveshan
+              Why NGOs Love Driya.AI
             </h2>
             <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Built by NGO leaders, for NGO leaders
@@ -332,7 +332,7 @@ export default function Home() {
               Trusted by NGO Leaders
             </h2>
             <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              See what other organizations are achieving with Anveshan
+              See what other organizations are achieving with Driya.AI
             </p>
           </div>
 
@@ -371,7 +371,7 @@ export default function Home() {
             Ready to Join the Network?
           </h2>
           <p className="text-xl sm:text-2xl text-muted-foreground mb-10">
-            Join NGOs across India who are discovering the right collaborators with Anveshan.
+            Join NGOs across India who are discovering the right collaborators with Driya.AI.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

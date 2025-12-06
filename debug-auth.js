@@ -1,5 +1,5 @@
 // Simple script to debug authentication issues
-console.log("=== Anveshan Sutra Authentication Debug ===");
+console.log("=== Drivya.AI Authentication Debug ===");
 console.log("Project URL: https://thsvuhwgauwvuecpejir.supabase.co");
 console.log("");
 

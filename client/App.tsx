@@ -28,7 +28,7 @@ export default function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* ANVESHAN New Platform Routes */}
+            {/* Drivya.AI New Platform Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/auth" element={<AuthPage />} />

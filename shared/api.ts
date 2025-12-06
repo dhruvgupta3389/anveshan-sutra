@@ -8,7 +8,7 @@ export interface DemoResponse {
   message: string;
 }
 
-// ==================== NEW ANVESHAN TYPES ====================
+// ==================== NEW DRIVYA.AI TYPES ====================
 
 // Focus Areas (Controlled Taxonomy)
 export interface FocusArea {
@@ -48,7 +48,7 @@ export interface AuthResponse {
 }
 
 // Organization Types
-export interface AnveshanOrganization {
+export interface DrivyaOrganization {
   id: string;
   user_id: string;
   name: string;
@@ -105,7 +105,7 @@ export interface SearchWithFiltersRequest {
   offset?: number;
 }
 
-export interface MatchResult extends AnveshanOrganization {
+export interface MatchResult extends DrivyaOrganization {
   alignment_score: number;
   match_reason: string;
 }

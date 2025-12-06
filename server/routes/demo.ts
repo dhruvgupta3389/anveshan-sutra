@@ -38,7 +38,7 @@ export const handleDemo: RequestHandler = async (_req, res) => {
     }
 
     const response: DemoResponse = {
-      message: `Anveshan API is running! Supabase status: ${supabaseStatus}${supabaseError ? ` - ${supabaseError}` : ''}`,
+      message: `Drivya.AI API is running! Supabase status: ${supabaseStatus}${supabaseError ? ` - ${supabaseError}` : ''}`,
     };
 
     res.json(response);

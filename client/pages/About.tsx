@@ -74,7 +74,7 @@ export default function About() {
               <div className="w-20 h-20 rounded-full overflow-hidden">
                 <img 
                   src="/Gemini_Generated_Image_8ghzle8ghzle8ghz.png" 
-                  alt="Anveshan Logo" 
+                  alt="Drivya.AI Logo" 
                   className="w-full h-full object-cover"
                 />
               </div>

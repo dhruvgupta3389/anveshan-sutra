@@ -63,13 +63,88 @@ export default function OrgSubmit() {
   ];
 
   const focusAreaOptions = [
-    "Education",
-    "Health",
-    "Environment",
-    "Livelihood",
-    "Governance",
-    "Technology",
-  ];
+  "Education & STEM",
+  "School Education",
+  "Digital Education",
+  "STEM / Robotics",
+  "Scholarships",
+  "Teacher Training",
+  "Adult Literacy",
+
+  "Skill Development & Livelihood",
+  "Vocational Training",
+  "Entrepreneurship Support",
+  "Self-Employment",
+  "Rural Livelihood",
+  "Urban Livelihood",
+
+  "Health & Nutrition",
+  "Preventive Healthcare",
+  "Maternal & Child Health",
+  "Sanitation & Hygiene",
+  "Nutrition Programs",
+  "Medical Camps",
+
+  "Women Empowerment",
+  "Women Skilling",
+  "Women Safety & Rights",
+  "Financial Inclusion (Women)",
+  "Leadership Development (Women)",
+
+  "Environment & Sustainability",
+  "Waste Management",
+  "Water Conservation",
+  "Renewable Energy",
+  "Energy Efficiency",
+  "Climate Action",
+  "Urban Green Spaces",
+
+  "Agriculture & Rural Development",
+  "Farmer Training",
+  "Agri-Tech",
+  "Supply Chain Improvement",
+  "Irrigation Support",
+  "Animal Husbandry",
+
+  "Community Development",
+  "Village Development",
+  "Infrastructure Support",
+  "Slum Development",
+  "Migrant Support",
+  "Disaster Relief",
+  "Public Utilities",
+
+  "Innovation, Research & Technology",
+  "Innovation Labs",
+  "Incubation Support",
+  "R&D Projects",
+  "Social Innovation",
+  "Startup & Entrepreneurship Programs",
+  "Digital Transformation",
+
+  "Differently-Abled Support",
+  "Assistive Devices",
+  "Special Education",
+  "Accessibility Initiatives",
+
+  "Youth Development & Sports",
+  "Sports Training",
+  "Sports Infrastructure",
+  "Youth Leadership Programs",
+  "Volunteering Programs",
+
+  "Arts, Culture & Heritage",
+  "Cultural Preservation",
+  "Museums & Heritage",
+  "Cultural Programs",
+
+  "Governance, Policy & Civic Engagement",
+  "Good Governance",
+  "Digital Governance",
+  "Transparency Initiatives",
+  "Citizen Engagement Platforms",
+  "RTI Awareness"
+];
 
   const regionOptions = [
     "Northern India",
@@ -235,7 +310,7 @@ export default function OrgSubmit() {
               Submit Your Organization
             </h1>
             <p className="text-lg text-muted-foreground">
-              Help us verify and list your organization in Anveshan to connect
+              Help us verify and list your organization in Driya.AI to connect
               with partners.
             </p>
           </div>

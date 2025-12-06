@@ -1,4 +1,4 @@
-# ANVESHAN - Complete Platform Specification
+# Drivya.AI - Complete Platform Specification
 
 **A Two-Sided Marketplace Connecting NGOs with Funders**
 
@@ -20,9 +20,9 @@
 
 ## 1. Platform Overview
 
-### What is ANVESHAN?
+### What is Drivya.AI?
 
-ANVESHAN is an **AI-powered matching platform** that connects:
+Drivya.AI is an **AI-powered matching platform** that connects:
 - **NGOs** (organizations seeking funding and partnerships) 
 - **Funders** (CSRs, foundations, donors seeking impact opportunities)
 
@@ -835,7 +835,7 @@ All components mobile-first
 
 ### For NGOs
 **Q: Is this free?**
-A: Yes, ANVESHAN is completely free for NGOs.
+A: Yes, Drivya.AI is completely free for NGOs.
 
 **Q: How does the matching work?**
 A: We match you with funders based on focus area overlap, geographic region, and mission alignment. The higher the score, the better the match.
@@ -860,7 +860,7 @@ A: For MVP, you contact NGOs directly via their website. In-app messaging coming
 
 ## End of Specification
 
-This document describes the complete ANVESHAN platform. All decisions prioritize:
+This document describes the complete Drivya.AI platform. All decisions prioritize:
 1. **Simplicity** - Easy for non-technical NGO workers
 2. **Trust** - Verified organizations, clear information
 3. **Speed** - Fast onboarding, fast matching

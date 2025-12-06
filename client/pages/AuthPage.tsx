@@ -178,7 +178,7 @@ export default function AuthPage() {
         <div className="w-full max-w-md">
           {/* Logo / Title */}
           <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold text-foreground mb-2">ANVESHAN</h1>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Drivya.AI</h1>
             <p className="text-muted-foreground">
               Connect NGOs with Funders
             </p>

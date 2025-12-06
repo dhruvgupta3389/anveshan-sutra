@@ -74,7 +74,7 @@ export default function Footer() {
                 <LayoutGrid className="w-5 h-5" />
               </div>
               <span className="font-bold text-xl text-secondary-foreground tracking-tight">
-                Anveshan
+                Driya.AI
               </span>
             </Link>
             <p className="text-secondary-foreground/90 mb-6 max-w-sm leading-relaxed">
@@ -137,12 +137,12 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-secondary-foreground/80 text-sm">
-            © {currentYear} Anveshan Inc. All rights reserved.
+            © {currentYear} Driya.AI Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-2 text-sm text-secondary-foreground/80">
             <span>Made with</span>
             <Heart className="w-4 h-4 text-red-500 fill-red-500/20" />
-            <span>by the Anveshan Team</span>
+            <span>by the Driya.AI Team</span>
           </div>
         </div>
       </div>

@@ -42,7 +42,7 @@ export default function Login() {
                 Welcome Back
               </h1>
               <p className="text-muted-foreground">
-                Sign in to your Anveshan account
+                Sign in to your Drivya.AI account
               </p>
             </div>
 
@@ -207,10 +207,10 @@ export default function Login() {
               <div className="flex items-center justify-between group">
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-mono text-sm text-foreground">demo@anveshan.org</p>
+                  <p className="font-mono text-sm text-foreground">demo@annvesha.org</p>
                 </div>
                 <button
-                  onClick={() => copyToClipboard("demo@anveshan.org", "email")}
+                  onClick={() => copyToClipboard("demo@Drivya.AI", "email")}
                   className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors"
                 >
                   {copiedField === "email" ? "Copied!" : "Copy"}

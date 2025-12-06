@@ -159,12 +159,12 @@ export default function Search() {
                     <label className="block text-sm font-medium mb-2">
                       Focus Area
                     </label>
-                    <Select value={selectedFocusArea} onValueChange={setSelectedFocusArea}>
+                    <Select value={selectedFocusArea || "__all__"} onValueChange={(val) => setSelectedFocusArea(val === "__all__" ? "" : val)}>
                       <SelectTrigger>
                         <SelectValue placeholder="All areas" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Areas</SelectItem>
+                        <SelectItem value="__all__">All Areas</SelectItem>
                         {focusAreas.map((area) => (
                           <SelectItem key={area} value={area}>
                             {area}
@@ -179,12 +179,12 @@ export default function Search() {
                     <label className="block text-sm font-medium mb-2">
                       Region
                     </label>
-                    <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                    <Select value={selectedRegion || "__all__"} onValueChange={(val) => setSelectedRegion(val === "__all__" ? "" : val)}>
                       <SelectTrigger>
                         <SelectValue placeholder="All regions" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Regions</SelectItem>
+                        <SelectItem value="__all__">All Regions</SelectItem>
                         {regions.map((region) => (
                           <SelectItem key={region} value={region}>
                             {region}
