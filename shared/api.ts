@@ -110,8 +110,9 @@ export interface MatchResult extends DrivyaOrganization {
   match_reason: string;
 }
 
+// Keep both SearchResponse interfaces - one for new API, one for legacy
 export interface SearchResponse {
-  organizations: MatchResult[];
+  organizations: SearchResult[];
   total: number;
 }
 
@@ -182,9 +183,4 @@ export interface SearchParams {
 
 export interface SearchResult extends Organization {
   alignmentScore: number;
-}
-
-export interface SearchResponse {
-  organizations: SearchResult[];
-  total: number;
 }

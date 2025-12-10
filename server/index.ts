@@ -12,6 +12,14 @@ import {
   handleGetFocusAreas,
   handleGetRegions,
 } from "./routes/matches";
+import {
+  handleGetOrganizations,
+  handleSearchOrganizations,
+  handleGetFocusAreas as handleGetOrganizationFocusAreas,
+  handleGetRegions as handleGetOrganizationRegions,
+  handleGetOrganizationById,
+} from "./routes/organizations";
+import { handleSubmitOrganizationToJson } from "./routes/organizations";
 
 // Load environment variables from .env.local
 dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
@@ -37,7 +45,15 @@ export function createServer() {
   app.post("/api/auth/login", handleLogin);
   app.get("/api/auth/me", handleGetCurrentUser);
 
-  // Organization routes
+  // NEW Organization routes (from JSON file)
+  app.get("/api/organizations", handleGetOrganizations);
+  app.get("/api/organizations/search", handleSearchOrganizations);
+  app.get("/api/organizations/filters/focus-areas", handleGetOrganizationFocusAreas);
+  app.get("/api/organizations/filters/regions", handleGetOrganizationRegions);
+  app.get("/api/organizations/:id", handleGetOrganizationById);
+  app.post("/api/organizations/submit", handleSubmitOrganizationToJson);
+
+  // Legacy organization routes (kept for backward compatibility)
   app.post("/api/orgs/submit", handleSubmitOrganization);
   app.get("/api/orgs/search", handleSearch);
   app.get("/api/orgs/:id", handleGetOrganization);

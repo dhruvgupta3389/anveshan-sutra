@@ -4,6 +4,15 @@ import { Users, Target, TrendingUp, Award, ChevronRight, BookOpen, Globe, Heart 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+export function AboutPlaceholder() {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-8">
+      <h1 className="text-3xl font-bold mb-4">About</h1>
+      <p className="text-gray-600">This is the About page placeholder.</p>
+    </div>
+  );
+}
+
 export default function About() {
   const [activeTab, setActiveTab] = useState('mission');
 

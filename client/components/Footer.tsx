@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import footerLinks from "../data/footerLinks.json";
 import { 
   LayoutGrid, 
   Twitter, 
@@ -8,156 +10,115 @@ import {
   Heart, 
   Globe 
 } from "lucide-react";
+import { Instagram } from "lucide-react";
+import { Youtube } from "lucide-react";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
-  const footerLinks = {
-    product: [
-      { label: "Features", href: "/features" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Case Studies", href: "/customers" },
-      { label: "API Documentation", href: "/docs" },
-    ],
-    company: [
-      { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/careers", badge: "Hiring" },
-      { label: "Blog", href: "/blog" },
-      { label: "Contact", href: "/contact" },
-    ],
-    legal: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Service", href: "/terms" },
-      { label: "Cookie Policy", href: "/cookies" },
-    ],
+  const socialIcons = {
+    linkedin: <Linkedin aria-label="LinkedIn" className="w-5 h-5" />,
+    instagram: <Instagram aria-label="Instagram" className="w-5 h-5" />,
+    youtube: <Youtube aria-label="YouTube" className="w-5 h-5" />,
   };
 
   return (
-    <footer className="bg-secondary border-t border-border pt-16 pb-8">
-      <div className="container mx-auto px-4 sm:px-6">
-        
-        {/* Top Section: CTA & Newsletter */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-16 items-center">
-          <div>
-            <h2 className="text-2xl font-bold text-secondary-foreground mb-3">
-              Stay ahead of the curve.
-            </h2>
-            <p className="text-secondary-foreground/90 max-w-md">
-              Join 10,000+ organizations discovering new opportunities every week. 
-              No spam, unsubscribe anytime.
-            </p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <input 
-                type="email" 
-                placeholder="Enter your email address" 
-                className="w-full bg-card border border-border rounded-xl px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              />
-            </div>
-            <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
-              Subscribe <Send className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        <div className="h-px bg-border mb-16" />
-
-        {/* Middle Section: Links */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
-          
-          {/* Brand Column */}
-          <div className="col-span-2 lg:col-span-2">
-            <Link to="/" className="flex items-center gap-3 mb-6 group">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl text-primary-foreground shadow-lg shadow-primary/20">
-                <LayoutGrid className="w-5 h-5" />
-              </div>
-              <span className="font-bold text-xl text-secondary-foreground tracking-tight">
-                Driya.AI
-              </span>
-            </Link>
-            <p className="text-secondary-foreground/90 mb-6 max-w-sm leading-relaxed">
-              The leading platform for discovering, evaluating, and partnering with verified organizations. Built for transparency and trust.
-            </p>
-            <div className="flex gap-4">
-              <SocialLink href="#" icon={Twitter} />
-              <SocialLink href="#" icon={Linkedin} />
-              <SocialLink href="#" icon={Github} />
-              <SocialLink href="#" icon={Globe} />
-            </div>
-          </div>
-
-          {/* Links Columns */}
-          <div>
-            <h3 className="font-semibold text-secondary-foreground mb-6">Product</h3>
-            <ul className="flex flex-col gap-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.href}>
-                  <Link to={link.href} className="text-secondary-foreground/80 hover:text-primary transition-colors text-sm font-medium">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-secondary-foreground mb-6">Company</h3>
-            <ul className="flex flex-col gap-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link to={link.href} className="group flex items-center gap-2 text-secondary-foreground/80 hover:text-primary transition-colors text-sm font-medium">
-                    {link.label}
-                    {link.badge && (
-                      <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded border border-primary/20">
-                        {link.badge}
-                      </span>
-                    )}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-secondary-foreground mb-6">Legal</h3>
-            <ul className="flex flex-col gap-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.href}>
-                  <Link to={link.href} className="text-secondary-foreground/80 hover:text-primary transition-colors text-sm font-medium">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-secondary-foreground/80 text-sm">
-            © {currentYear} Driya.AI Inc. All rights reserved.
+    <footer className="bg-gray-900 text-gray-300 pt-12 pb-6 mt-10">
+      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-10">
+        {/* Logo + About */}
+        <div>
+          <Link to="/">
+            <h1 className="text-white font-bold text-2xl cursor-pointer">Drivya.ai</h1>
+          </Link>
+          <p className="text-gray-400 mt-3 text-sm">
+            Your partner in intelligent organization discovery & CSR alignment.
           </p>
-          <div className="flex items-center gap-2 text-sm text-secondary-foreground/80">
-            <span>Made with</span>
-            <Heart className="w-4 h-4 text-red-500 fill-red-500/20" />
-            <span>by the Driya.AI Team</span>
-          </div>
+        </div>
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-white font-semibold mb-3">Quick Links</h3>
+          <ul className="space-y-2">
+            {footerLinks.company.map(item => (
+              <li key={item.name}>
+                <Link to={item.href} className="hover:text-white transition focus:outline-none focus:ring-2 focus:ring-white">
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Tools */}
+        <div>
+          <h3 className="text-white font-semibold mb-3">Tools</h3>
+          <ul className="space-y-2">
+            {footerLinks.tools.map(item => (
+              <li key={item.name}>
+                <Link to={item.href} className="hover:text-white transition focus:outline-none focus:ring-2 focus:ring-white">
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Legal */}
+        <div>
+          <h3 className="text-white font-semibold mb-3">Legal</h3>
+          <ul className="space-y-2">
+            {footerLinks.legal.map(item => (
+              <li key={item.name}>
+                <Link to={item.href} className="hover:text-white transition focus:outline-none focus:ring-2 focus:ring-white">
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Social */}
+        <div>
+          <h3 className="text-white font-semibold mb-3">Social</h3>
+          <ul className="flex gap-4 mt-1">
+            {footerLinks.social.map(item => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.name}
+                  className="hover:text-white transition focus:outline-none focus:ring-2 focus:ring-white"
+                >
+                  {socialIcons[item.icon]}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
+      {/* Contact + Back to Top */}
+      <div className="container mx-auto px-6 mt-10 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Contact */}
+        <a
+          href="mailto:support@drivya.ai"
+          className="hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+          aria-label="Email support@drivya.ai"
+        >
+          support@drivya.ai
+        </a>
+        {/* Back to Top */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="text-gray-400 hover:text-white transition focus:outline-none focus:ring-2 focus:ring-white"
+          aria-label="Back to Top"
+        >
+          Back to Top ↑
+        </button>
+      </div>
+      {/* Copyright */}
+      <div className="text-center text-gray-500 text-sm mt-6 border-t border-gray-700 pt-4">
+        © {new Date().getFullYear()} Drivya.ai — All rights reserved.
+      </div>
     </footer>
-  );
-}
-
-// Helper for social icons to keep code clean
-function SocialLink({ href, icon: Icon }: { href: string; icon: any }) {
-  return (
-    <a 
-      href={href} 
-      className="w-10 h-10 flex items-center justify-center rounded-lg bg-card hover:bg-primary text-foreground hover:text-primary-foreground border border-border hover:border-primary transition-all duration-300 group shadow-sm hover:shadow-md"
-    >
-      <Icon className="w-5 h-5 text-foreground group-hover:text-primary-foreground" />
-    </a>
   );
 }

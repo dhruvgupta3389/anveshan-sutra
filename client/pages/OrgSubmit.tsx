@@ -255,7 +255,7 @@ export default function OrgSubmit() {
         projects: formData.projects,
       };
 
-      const response = await fetch("/api/orgs/submit", {
+      const response = await fetch("/api/organizations/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -310,7 +310,7 @@ export default function OrgSubmit() {
               Submit Your Organization
             </h1>
             <p className="text-lg text-muted-foreground">
-              Help us verify and list your organization in Driya.AI to connect
+              Help us verify and list your organization in Drivya.AI to connect
               with partners.
             </p>
           </div>

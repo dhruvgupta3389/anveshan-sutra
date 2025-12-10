@@ -25,25 +25,35 @@ export default function OrgProfileDetail() {
   const [isShortlisted, setIsShortlisted] = useState(false);
 
   useEffect(() => {
-    const fetchOrg = async () => {
-      if (!id) return;
+    if (!id) return;
 
+    const fetchOrganization = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/orgs/${id}`);
-        if (!response.ok) throw new Error("Organization not found");
+        // Fetch organization from backend API
+        const response = await fetch(`/api/organizations/${id}`);
 
-        const data = await response.json();
-        setOrg(data);
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error("Organization not found");
+          }
+          throw new Error("Failed to fetch organization");
+        }
+
+        const org = (await response.json()) as SearchResult;
+        setOrg(org);
+        setError(null);
       } catch (err) {
-        setError("Failed to load organization details");
+        setError(
+          err instanceof Error ? err.message : "Failed to load organization details"
+        );
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrg();
+    fetchOrganization();
   }, [id]);
 
   if (loading) {
@@ -164,6 +174,10 @@ export default function OrgProfileDetail() {
 
           {/* Actions */}
           <div className="flex flex-wrap gap-3">
+            <Button variant="ghost" onClick={() => navigate(-1)} className="flex items-center gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Go Back
+            </Button>
             <Button
               variant={isShortlisted ? "default" : "outline"}
               onClick={() => setIsShortlisted(!isShortlisted)}

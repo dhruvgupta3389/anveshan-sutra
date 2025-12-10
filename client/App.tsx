@@ -15,8 +15,12 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
-import About from "./pages/About";
+import About, { AboutPlaceholder } from "./pages/About";
 import TextMaker from "./pages/TextMaker";
+import Contact from "./pages/Contact";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import SubmitOrganization from "./pages/SubmitOrganization";
 
 const queryClient = new QueryClient();
 
@@ -30,14 +34,20 @@ export default function App() {
           <Routes>
             {/* Drivya.AI New Platform Routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/about" element={<AboutPlaceholder />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/dashboard" element={<NGODashboard />} />
             <Route path="/search" element={<Search />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                        <Route path="/submit-organization" element={<SubmitOrganization />} />
             <Route path="/shortlist" element={<Shortlist />} />
             <Route path="/org-profile/:id" element={<OrgProfileDetail />} />
+            <Route path="/organization/:id" element={<OrgProfileDetail />} />
             <Route path="/ppt/:id" element={<PPTViewer />} />
             <Route path="/org-submit" element={<OrgSubmit />} />
+            <Route path="/submit-organization" element={<OrgSubmit />} />
             <Route path="/textmaker" element={<TextMaker />} />
 
             {/* Legacy Routes (keeping for backward compatibility) */}

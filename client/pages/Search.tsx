@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SearchResult } from "@shared/api";
@@ -19,7 +19,7 @@ import { Heart, ExternalLink, FileText, CheckCircle2 } from "lucide-react";
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [focusAreas, setFocusAreas] = useState<string[]>([]);
   const [regions, setRegions] = useState<string[]>([]);
@@ -37,57 +37,81 @@ export default function Search() {
     (searchParams.get("sort") as any) || "alignment"
   );
 
-  // Fetch filter options
+  // Fetch filter options from backend
   useEffect(() => {
-    const fetchFilters = async () => {
+    const fetchFilterOptions = async () => {
       try {
-        const [focusRes, regionsRes] = await Promise.all([
-          fetch("/api/focus-areas"),
-          fetch("/api/regions"),
+        const [focusAreasRes, regionsRes] = await Promise.all([
+          fetch("/api/organizations/filters/focus-areas"),
+          fetch("/api/organizations/filters/regions"),
         ]);
 
-        const focusData = await focusRes.json();
-        const regionsData = await regionsRes.json();
+        if (focusAreasRes.ok) {
+          const data = await focusAreasRes.json();
+          setFocusAreas(data.focusAreas || []);
+        }
 
-        setFocusAreas(focusData.focus_areas || []);
-        setRegions(regionsData.regions || []);
+        if (regionsRes.ok) {
+          const data = await regionsRes.json();
+          setRegions(data.regions || []);
+        }
       } catch (err) {
-        console.error("Error fetching filters:", err);
+        console.error("Failed to fetch filter options:", err);
+        // Fallback: populate filters from local JSON as backup
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          const orgs = require("@/data/organizations.json") as SearchResult[];
+          const areas = Array.from(
+            new Set(orgs.flatMap((o: any) => o.focusAreas || []))
+          );
+          const regs = Array.from(
+            new Set(orgs.map((o: any) => o.region).filter(Boolean))
+          );
+          setFocusAreas(areas);
+          setRegions(regs);
+        } catch (e) {
+          console.error("Fallback failed:", e);
+        }
       }
     };
 
-    fetchFilters();
+    fetchFilterOptions();
   }, []);
 
-  // Fetch search results
+  // Fetch search results from backend
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      setError(null);
+      const timer = setTimeout(async () => {
+        try {
+          const params = new URLSearchParams();
+          if (query) params.append("q", query);
+          if (selectedFocusArea) params.append("focusArea", selectedFocusArea);
+          if (selectedRegion) params.append("region", selectedRegion);
+          if (sortBy) params.append("sortBy", sortBy);
 
-      try {
-        const params = new URLSearchParams();
-        if (query) params.append("query", query);
-        if (selectedFocusArea) params.append("focusArea", selectedFocusArea);
-        if (selectedRegion) params.append("region", selectedRegion);
-        params.append("sortBy", sortBy);
+          const response = await fetch(`/api/organizations/search?${params}`);
 
-        const response = await fetch(`/api/orgs/search?${params}`);
-        if (!response.ok) throw new Error("Search failed");
+          if (!response.ok) {
+            throw new Error("Search request failed");
+          }
 
-        const data = await response.json();
-        setResults(data.organizations || []);
-      } catch (err) {
-        setError("Failed to fetch results. Please try again.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+          const data = await response.json();
+          setResults(data.organizations || []);
+          setError(null);
+        } catch (err) {
+          setError("Search failed");
+          console.error(err);
+          setResults([]);
+        } finally {
+          setLoading(false);
+        }
+      }, 200);
+
+      return () => clearTimeout(timer);
     };
 
-    // Debounce search
-    const timer = setTimeout(fetchResults, 300);
-    return () => clearTimeout(timer);
+    fetchResults();
   }, [query, selectedFocusArea, selectedRegion, sortBy]);
 
   // Update URL params
@@ -321,13 +345,15 @@ export default function Search() {
                                 className="w-full"
                                 asChild
                               >
-                                <a href={`/org-profile/${org.id}`}>View Details</a>
+                                <Link to={`/organization/${org.id}`}>View Details</Link>
                               </Button>
-
+                              <p className="text-sm text-muted-foreground mb-3">
+                                {org.description && org.description.length > 160
+                                  ? org.description.slice(0, 157) + "..."
+                                  : org.description || org.mission}
+                              </p>
                               <Button
-                                variant={
-                                  shortlist.has(org.id) ? "default" : "outline"
-                                }
+                                variant={shortlist.has(org.id) ? "default" : "outline"}
                                 size="sm"
                                 className="w-full"
                                 onClick={() => toggleShortlist(org.id)}

@@ -50,7 +50,7 @@ export default function Header() {
                 <LayoutGrid className="w-5 h-5 text-foreground" />
               </div>
               <span className="font-bold text-2xl tracking-tight text-foreground">
-                Driya.AI
+                Drivya.AI
               </span>
             </Link>
 
