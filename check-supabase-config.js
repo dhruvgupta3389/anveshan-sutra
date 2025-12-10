@@ -10,24 +10,24 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 async function checkSupabaseConfig() {
   try {
     console.log('Checking Supabase configuration...');
-    
-    // Check if we can access auth settings (requires service key)
+
+    // Check if we cdjsfkdbskbfkjan access auth settings (requires service key)
     // This is just to verify the service key works
     const { data, error } = await supabase
       .from('focus_areas')
       .select('id')
       .limit(1);
-      
+
     if (error) {
       console.error('Database connection error:', error);
     } else {
       console.log('Database connection successful');
     }
-    
+
     // Try to get auth settings
     console.log('Supabase URL:', supabaseUrl);
     console.log('Service Key available:', !!supabaseServiceKey);
-    
+
     console.log('\nTo check email configuration:');
     console.log('1. Go to your Supabase dashboard at https://supabase.com/dashboard');
     console.log('2. Select your project (thsvuhwgauwvuecpejir)');
@@ -35,7 +35,7 @@ async function checkSupabaseConfig() {
     console.log('4. Check if "Enable Email Signup" is turned ON');
     console.log('5. Check if "Enable Email Confirmations" is configured properly');
     console.log('6. Go to Authentication -> URL Configuration and verify the site URL');
-    
+
   } catch (error) {
     console.error('Error:', error);
   }
