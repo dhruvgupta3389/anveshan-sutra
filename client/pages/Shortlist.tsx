@@ -5,12 +5,14 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Heart,
   Trash2,
   ExternalLink,
   FileText,
   ArrowLeft,
+  HelpCircle,
 } from "lucide-react";
 
 interface ShortlistOrg {
@@ -116,20 +118,18 @@ export default function Shortlist() {
         </div>
 
         {shortlist.length === 0 ? (
-          <Card>
-            <CardContent className="pt-12 pb-12 text-center">
-              <Heart className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                No organizations saved yet
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Browse organizations and click the heart icon to add them to your shortlist
-              </p>
-              <Button asChild>
-                <Link to="/search">Continue Searching</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="text-center py-16 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+            <div className="text-6xl mb-4">❤️</div>
+            <h2 className="text-2xl font-bold text-slate-700 mb-2">
+              Your shortlist is empty
+            </h2>
+            <p className="text-slate-500 mb-6 max-w-md mx-auto">
+              Save organizations you like by clicking the heart icon — they'll appear here for easy comparison!
+            </p>
+            <Button asChild>
+              <Link to="/search">Start Exploring →</Link>
+            </Button>
+          </div>
         ) : (
           <div className="space-y-6">
             {shortlist.map((org) => (
@@ -211,15 +211,24 @@ export default function Shortlist() {
                       </div>
                     </div>
 
-                    {/* Alignment Score & Actions */}
                     <div className="md:col-span-1">
                       <div className="bg-primary/10 rounded-lg p-4 text-center mb-4">
                         <div className="text-3xl font-bold text-primary mb-1">
                           {org.alignmentScore}
                         </div>
-                        <div className="text-xs text-muted-foreground">
-                          Alignment
-                        </div>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="text-xs text-muted-foreground flex items-center justify-center gap-1 cursor-help">
+                                Alignment
+                                <HelpCircle className="w-3 h-3" />
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-[180px]">
+                              <p>How well this org matches your focus areas. Higher = better fit!</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
 
                       <div className="space-y-2">

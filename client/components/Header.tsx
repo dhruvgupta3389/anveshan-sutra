@@ -117,19 +117,22 @@ export default function Header() {
             </div>
 
             {/* 3. Desktop Actions */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-3">
+              {/* Primary CTA - Most important action */}
               <Link
                 to="/org-submit"
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-lg hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95"
+                className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 active:scale-95"
               >
                 <Plus className="w-4 h-4" />
-                <span>Submit Org</span>
+                <span>Add Organization</span>
               </Link>
+
+              {/* Secondary Action - Less prominent */}
               <button
                 onClick={openTextMaker}
-                className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground text-sm font-semibold rounded-lg hover:bg-secondary/90 transition-all hover:shadow-lg hover:shadow-secondary/20 active:scale-95"
+                className="flex items-center gap-2 px-4 py-2.5 border border-border bg-card text-foreground text-sm font-medium rounded-xl hover:bg-secondary/30 hover:border-primary/30 transition-all active:scale-95"
               >
-                <span>Summarizer</span>
+                <span>✨ AI Summarizer</span>
               </button>
 
               {/* User Menu or Login/Signup */}
@@ -196,15 +199,15 @@ export default function Header() {
                     <div className="flex items-center gap-2">
                       <Link
                         to="/login"
-                        className="px-4 py-2 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                        className="px-4 py-2.5 text-sm font-medium text-foreground hover:text-primary hover:bg-secondary/30 rounded-xl transition-all"
                       >
                         Log In
                       </Link>
                       <Link
                         to="/signup"
-                        className="px-4 py-2 bg-foreground text-background text-sm font-semibold rounded-lg hover:bg-foreground/90 transition-all"
+                        className="px-4 py-2.5 bg-foreground text-background text-sm font-semibold rounded-xl hover:bg-foreground/90 transition-all active:scale-95"
                       >
-                        Sign Up
+                        Sign Up Free
                       </Link>
                     </div>
                   )}
@@ -260,7 +263,7 @@ export default function Header() {
                 className="flex items-center gap-3 p-3 rounded-xl text-foreground hover:bg-secondary/10 font-medium transition-colors"
               >
                 <Plus className="w-5 h-5 text-primary" />
-                Submit Organization
+                Add Organization
               </Link>
 
               {user && (
@@ -281,7 +284,7 @@ export default function Header() {
                 }}
                 className="flex items-center gap-3 p-3 rounded-xl text-foreground hover:bg-secondary/10 font-medium transition-colors text-left"
               >
-                <span className="text-secondary">Summarizer</span>
+                <span>✨ AI Summarizer</span>
               </button>
 
               <div className="h-px bg-border my-2" />

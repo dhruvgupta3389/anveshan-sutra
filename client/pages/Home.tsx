@@ -8,6 +8,11 @@ import {
   Award,
   FileText,
   Upload,
+  Sparkles,
+  BarChart3,
+  Layers,
+  MapPin,
+  Building2,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -218,6 +223,80 @@ export default function Home() {
 
       {/* Organization Matching Demo */}
       <OrganizationMatching />
+
+      {/* What You Can Do Here - Feature Cards */}
+      <section className="py-20 px-4 sm:px-6 bg-gradient-to-b from-background to-secondary/5">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
+              PLATFORM FEATURES
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+              What You Can Do Here
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-xl mx-auto">
+              Powerful tools to find and connect with the right organizations
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Sparkles,
+                title: "Intelligent Matching",
+                description: "AI finds organizations aligned with your mission",
+                link: "/search",
+              },
+              {
+                icon: BarChart3,
+                title: "Alignment Scores",
+                description: "See compatibility at a glance with percentage scores",
+                link: "/search",
+              },
+              {
+                icon: Layers,
+                title: "Focus-Area Discovery",
+                description: "Filter by education, health, environment & more",
+                link: "/search?focus=",
+              },
+              {
+                icon: MapPin,
+                title: "Region-Wise Search",
+                description: "Find partners in your state or across India",
+                link: "/search?region=",
+              },
+              {
+                icon: Building2,
+                title: "Organization Profiles",
+                description: "Detailed info on mission, projects & partners",
+                link: "/search",
+              },
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <Link
+                  key={index}
+                  to={feature.link}
+                  className="group p-6 bg-card rounded-2xl border-2 border-border hover:border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                    <Icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {feature.description}
+                  </p>
+                  <div className="mt-4 flex items-center gap-1 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    Explore <ArrowRight className="w-4 h-4" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* About Us Section */}
       <section id="about-us-section" className="py-20 px-4 sm:px-6">

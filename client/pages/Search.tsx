@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, ExternalLink, CheckCircle2, Search as SearchIcon } from "lucide-react";
+import { Heart, ExternalLink, CheckCircle2, Search as SearchIcon, HelpCircle } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { searchOrganizations } from "@/lib/services/organizations";
 import { SearchResult } from "@shared/api";
 
@@ -246,14 +247,17 @@ export default function Search() {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
               </div>
             ) : results.length === 0 ? (
-              <div className="text-center py-12">
-                <h3 className="text-xl font-semibold text-muted-foreground mb-2">
-                  No organizations found
+              <div className="text-center py-16 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                <div className="text-5xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold text-slate-700 mb-2">
+                  No matches yet
                 </h3>
-                <p className="text-muted-foreground mb-4">
-                  Try adjusting your search criteria
+                <p className="text-slate-500 mb-6 max-w-md mx-auto">
+                  Try different keywords or filters — we're searching across hundreds of organizations!
                 </p>
-                <Button onClick={handleClearFilters}>Clear Filters</Button>
+                <Button onClick={handleClearFilters} variant="outline">
+                  Clear All Filters
+                </Button>
               </div>
             ) : (
               <>
@@ -312,9 +316,19 @@ export default function Search() {
                               <div className="text-3xl font-bold text-primary mb-1">
                                 {org.alignmentScore || "N/A"}
                               </div>
-                              <div className="text-xs text-muted-foreground">
-                                Alignment Score
-                              </div>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <div className="text-xs text-muted-foreground flex items-center justify-end gap-1 cursor-help">
+                                      Alignment Score
+                                      <HelpCircle className="w-3 h-3" />
+                                    </div>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="bottom" className="max-w-[200px]">
+                                    <p>How well this organization's mission and focus areas match yours. Higher = better fit!</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             </div>
 
                             {/* Actions */}
