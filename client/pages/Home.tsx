@@ -20,14 +20,30 @@ export default function Home() {
               <p className="text-lg text-muted-foreground mb-8 max-w-lg">
                 Discover aligned partners using intelligent matching — no more endless research.
               </p>
-              <Link
-                to="/search"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl"
-              >
-                Explore Matching Organizations
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-4 mb-4">
+                <Link
+                  to="/search"
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl"
+                >
+                  Explore Matching Organizations
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  to="/org-submit"
+                  className="inline-flex items-center gap-2 px-8 py-4 border-2 border-primary text-primary rounded-xl hover:bg-primary/5 transition-all duration-300 font-bold text-lg"
+                >
+                  Set up your organization
+                </Link>
+              </div>
+
+              {/* Helper text */}
+              <p className="text-sm text-muted-foreground">
+                Organizations submit once to receive relevant collaboration matches.
+              </p>
             </div>
+
 
             {/* Right: Miniature Matching Preview */}
             <div className="flex flex-col items-center lg:items-end">
