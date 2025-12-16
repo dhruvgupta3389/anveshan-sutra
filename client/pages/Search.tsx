@@ -30,6 +30,16 @@ export default function Search() {
   const [regions, setRegions] = useState<string[]>([]);
   const [shortlist, setShortlist] = useState<Set<string>>(new Set());
 
+  // Guided intro state - persisted to localStorage
+  const [showGuidedIntro, setShowGuidedIntro] = useState(() => {
+    return localStorage.getItem("dismissedGuidedIntro") !== "true";
+  });
+
+  const dismissGuidedIntro = () => {
+    setShowGuidedIntro(false);
+    localStorage.setItem("dismissedGuidedIntro", "true");
+  };
+
   // Filter state
   const [query, setQuery] = useState(searchParams.get("q") || "");
   const [selectedFocusArea, setSelectedFocusArea] = useState(
@@ -128,6 +138,61 @@ export default function Search() {
             Search and filter organizations by focus area, region, and more
           </p>
         </div>
+
+        {/* Guided First Match Intro - shows for first-time users */}
+        {showGuidedIntro && (
+          <div className="mb-8 p-6 bg-primary/5 border border-primary/20 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="flex-1">
+                {/* Title */}
+                <h2 className="text-lg font-semibold text-foreground mb-1">
+                  Here are organizations aligned with your mission
+                </h2>
+                {/* Subtext */}
+                <p className="text-sm text-muted-foreground mb-4">
+                  These matches are based on your focus areas, region, and goals.
+                </p>
+
+                {/* Context chips */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {selectedFocusArea && (
+                    <span className="px-3 py-1 bg-background border border-border rounded-full text-xs font-medium text-foreground">
+                      {selectedFocusArea}
+                    </span>
+                  )}
+                  {selectedRegion && (
+                    <span className="px-3 py-1 bg-background border border-border rounded-full text-xs font-medium text-foreground">
+                      {selectedRegion}
+                    </span>
+                  )}
+                  {!selectedFocusArea && !selectedRegion && (
+                    <>
+                      <span className="px-3 py-1 bg-background border border-border rounded-full text-xs font-medium text-foreground">
+                        All focus areas
+                      </span>
+                      <span className="px-3 py-1 bg-background border border-border rounded-full text-xs font-medium text-foreground">
+                        All regions
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Guidance text */}
+                <p className="text-xs text-muted-foreground">
+                  Start by opening any organization to see alignment details.
+                </p>
+              </div>
+
+              {/* Dismiss button */}
+              <button
+                onClick={dismissGuidedIntro}
+                className="text-sm text-primary hover:underline font-medium whitespace-nowrap"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Filters Sidebar */}
