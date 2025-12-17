@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Search, Plus, MapPin, Tag, AlertCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MatchExplanation from "@/components/MatchExplanation";
 import { useState, useEffect } from "react";
 import { SearchResult, SearchResponse } from "@shared/api";
 
@@ -228,6 +229,9 @@ export default function Dashboard() {
                           </span>
                         ))}
                       </div>
+
+                      {/* Why this match - compact explanation */}
+                      <MatchExplanation organization={org} compact />
                     </div>
 
                     {/* Alignment Score + Action */}
@@ -254,10 +258,9 @@ export default function Dashboard() {
                               fill="none"
                               stroke="hsl(var(--primary))"
                               strokeWidth="5"
-                              strokeDasharray={`${
-                                (org.alignmentScore / 100) *
+                              strokeDasharray={`${(org.alignmentScore / 100) *
                                 (45 * 2 * Math.PI)
-                              } ${45 * 2 * Math.PI}`}
+                                } ${45 * 2 * Math.PI}`}
                               strokeLinecap="round"
                               transform="rotate(-90 50 50)"
                             />

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MatchExplanation from "@/components/MatchExplanation";
+import AlignmentScoreBreakdown from "@/components/AlignmentScoreBreakdown";
 import { SearchResult } from "@shared/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +16,7 @@ import {
   MapPin,
   Briefcase,
   Award,
+  Lightbulb,
 } from "lucide-react";
 import { getOrganizationById } from "@/lib/services/organizations";
 
@@ -80,20 +83,6 @@ export default function OrgProfileDetail() {
     );
   }
 
-  const getAlignmentColor = (score: number) => {
-    if (score >= 80) return "text-green-600";
-    if (score >= 60) return "text-blue-600";
-    if (score >= 40) return "text-amber-600";
-    return "text-red-600";
-  };
-
-  const getAlignmentBgColor = (score: number) => {
-    if (score >= 80) return "bg-green-50";
-    if (score >= 60) return "bg-blue-50";
-    if (score >= 40) return "bg-amber-50";
-    return "bg-red-50";
-  };
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -152,21 +141,7 @@ export default function OrgProfileDetail() {
             </div>
 
             {/* Alignment Score Card */}
-            <div
-              className={`${getAlignmentBgColor(
-                org.alignmentScore
-              )} rounded-xl p-6 min-w-[180px] text-center`}
-            >
-              <div className={`text-4xl font-bold mb-2 ${getAlignmentColor(org.alignmentScore)}`}>
-                {org.alignmentScore}
-              </div>
-              <div className="text-sm font-medium text-muted-foreground">
-                Alignment Score
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                How well you match
-              </p>
-            </div>
+            <AlignmentScoreBreakdown organization={org} />
           </div>
 
           {/* Actions */}
@@ -373,6 +348,22 @@ export default function OrgProfileDetail() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Why This Match Card */}
+            <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5 text-primary" />
+                  Why this organization matches you
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <MatchExplanation organization={org} />
+                <p className="text-xs text-muted-foreground mt-4 pt-3 border-t border-border/50">
+                  Based on publicly available organization information
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>

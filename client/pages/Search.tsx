@@ -17,9 +17,71 @@ import { Heart, ExternalLink, CheckCircle2, Search as SearchIcon, HelpCircle } f
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { searchOrganizations } from "@/lib/services/organizations";
 import { SearchResult } from "@shared/api";
+import AlignmentScoreBreakdown from "@/components/AlignmentScoreBreakdown";
 
 // Use SearchResult from shared API
 type Organization = SearchResult;
+
+/**
+ * Generate match reasons based on organization data and search filters
+ * Returns 2-3 bullet points explaining why this org matches
+ */
+function generateMatchReasons(
+  org: Organization,
+  selectedFocusArea: string,
+  selectedRegion: string
+): string[] {
+  const reasons: string[] = [];
+
+  // Check for shared focus areas
+  if (org.focusAreas && org.focusAreas.length > 0) {
+    if (selectedFocusArea && org.focusAreas.some(
+      area => area.toLowerCase() === selectedFocusArea.toLowerCase()
+    )) {
+      // Matching focus area with filter
+      reasons.push(`Shared focus area: ${selectedFocusArea}`);
+    } else if (org.focusAreas.length >= 2) {
+      // Show top focus areas
+      reasons.push(`Works in ${org.focusAreas.slice(0, 2).join(" & ")}`);
+    } else {
+      reasons.push(`Focus area: ${org.focusAreas[0]}`);
+    }
+  }
+
+  // Check for regional overlap
+  if (org.region) {
+    if (selectedRegion && org.region.toLowerCase().includes(selectedRegion.toLowerCase())) {
+      reasons.push(`Active in ${org.region}`);
+    } else {
+      reasons.push(`Based in ${org.region}`);
+    }
+  }
+
+  // Extract mission highlight
+  if (org.mission) {
+    const missionLower = org.mission.toLowerCase();
+    if (missionLower.includes("early-stage") || missionLower.includes("startup")) {
+      reasons.push("Works with early-stage social enterprises");
+    } else if (missionLower.includes("rural") || missionLower.includes("village")) {
+      reasons.push("Focuses on rural communities");
+    } else if (missionLower.includes("women") || missionLower.includes("gender")) {
+      reasons.push("Supports women-led initiatives");
+    } else if (missionLower.includes("youth") || missionLower.includes("education")) {
+      reasons.push("Engaged in youth and education");
+    } else if (missionLower.includes("health") || missionLower.includes("healthcare")) {
+      reasons.push("Active in healthcare initiatives");
+    } else if (missionLower.includes("environment") || missionLower.includes("climate")) {
+      reasons.push("Focused on environmental impact");
+    } else if (org.fundingType === "provider" || org.fundingType === "grant") {
+      reasons.push("Provides funding support");
+    } else if (org.fundingType === "recipient") {
+      reasons.push("Seeking partnership opportunities");
+    }
+  }
+
+  // Return up to 3 reasons, or fallback if none
+  return reasons.slice(0, 3);
+}
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -375,26 +437,35 @@ export default function Search() {
                             </div>
                           </div>
 
-                          {/* Alignment Score */}
+                          {/* Alignment Score with Breakdown */}
                           <div className="md:text-right">
-                            <div className="bg-primary/10 rounded-lg p-4 mb-4 min-w-[150px]">
-                              <div className="text-3xl font-bold text-primary mb-1">
-                                {org.alignmentScore || "N/A"}
-                              </div>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <div className="text-xs text-muted-foreground flex items-center justify-end gap-1 cursor-help">
-                                      Alignment Score
-                                      <HelpCircle className="w-3 h-3" />
-                                    </div>
-                                  </TooltipTrigger>
-                                  <TooltipContent side="bottom" className="max-w-[200px]">
-                                    <p>How well this organization's mission and focus areas match yours. Higher = better fit!</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
+                            <AlignmentScoreBreakdown organization={org} compact />
+
+                            {/* Why this matches you */}
+                            {(() => {
+                              const matchReasons = generateMatchReasons(org, selectedFocusArea, selectedRegion);
+                              return (
+                                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 mb-4">
+                                  <h4 className="text-sm font-medium text-foreground mb-2">
+                                    Why this matches you
+                                  </h4>
+                                  {matchReasons.length > 0 ? (
+                                    <ul className="space-y-1">
+                                      {matchReasons.map((reason, idx) => (
+                                        <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                                          <span className="text-primary mt-0.5">•</span>
+                                          <span>{reason}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    <p className="text-xs text-muted-foreground">
+                                      This organization partially matches your criteria.
+                                    </p>
+                                  )}
+                                </div>
+                              );
+                            })()}
 
                             {/* Actions */}
                             <div className="flex gap-2 flex-col">
