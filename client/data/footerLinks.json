@@ -1,20 +1,53 @@
 {
   "company": [
-    { "name": "Home", "href": "/" },
-    { "name": "About", "href": "/about" },
-    { "name": "Contact", "href": "/contact" }
+    {
+      "name": "Home",
+      "href": "/"
+    },
+    {
+      "name": "About",
+      "href": "/about"
+    },
+    {
+      "name": "Contact",
+      "href": "/contact"
+    }
   ],
   "tools": [
-    { "name": "Search Organizations", "href": "/search" },
-    { "name": "Submit Organization", "href": "/submit-organization" }
+    {
+      "name": "Search Organizations",
+      "href": "/search"
+    },
+    {
+      "name": "Submit Organization",
+      "href": "/org-submit"
+    }
   ],
   "legal": [
-    { "name": "Privacy Policy", "href": "/privacy-policy" },
-    { "name": "Terms & Conditions", "href": "/terms-and-conditions" }
+    {
+      "name": "Privacy Policy",
+      "href": "/privacy-policy"
+    },
+    {
+      "name": "Terms & Conditions",
+      "href": "/terms-and-conditions"
+    }
   ],
   "social": [
-    { "name": "LinkedIn", "href": "https://linkedin.com", "icon": "linkedin" },
-    { "name": "Instagram", "href": "https://instagram.com", "icon": "instagram" },
-    { "name": "YouTube", "href": "https://youtube.com", "icon": "youtube" }
+    {
+      "name": "LinkedIn",
+      "href": "https://linkedin.com",
+      "icon": "linkedin"
+    },
+    {
+      "name": "Instagram",
+      "href": "https://instagram.com",
+      "icon": "instagram"
+    },
+    {
+      "name": "YouTube",
+      "href": "https://youtube.com",
+      "icon": "youtube"
+    }
   ]
 }
