@@ -388,9 +388,37 @@ export default function Search() {
               </div>
             ) : (
               <>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Showing {results.length} result{results.length !== 1 ? "s" : ""}
-                </p>
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {results.length} relevant organization{results.length !== 1 ? "s" : ""}
+                  </p>
+                  {results.length > 0 && (
+                    <>
+                      <div className="flex items-center gap-1 mt-1">
+                        <span className="text-sm text-muted-foreground">
+                          Estimated time saved: ~48 minutes (per search)
+                        </span>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button className="text-muted-foreground hover:text-foreground transition-colors">
+                                <HelpCircle className="w-3.5 h-3.5" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs">
+                              <p className="text-sm">
+                                Manual research typically takes ~60 minutes. Drivya's matching reduces this to ~12 minutes by consolidating verified data in one place.
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <p className="text-xs text-muted-foreground/70 mt-0.5">
+                        Compared to manual research across multiple websites
+                      </p>
+                    </>
+                  )}
+                </div>
 
                 <div className="space-y-4">
                   {results.map((org) => (

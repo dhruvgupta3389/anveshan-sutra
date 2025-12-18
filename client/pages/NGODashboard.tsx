@@ -113,11 +113,11 @@ export default function NGODashboard() {
               <div className="text-center">
                 <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground mb-2">
-                  Time Saved
+                  Research Time
                 </p>
-                <p className="text-4xl font-bold text-foreground">48</p>
+                <p className="text-2xl font-bold text-foreground">Reduced</p>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Hours vs. manual search
+                  Reduces time spent on manual partner research
                 </p>
               </div>
             </CardContent>

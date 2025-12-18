@@ -8,10 +8,48 @@ import { Organization, SearchResult, SearchParams } from '@shared/api';
 import { mockOrganizations, getAllFocusAreas, getAllRegions } from '@/data/organizations';
 
 /**
+ * Calculate base alignment score based on organization attributes
+ * This is the consistent score shown across all pages
+ */
+function calculateBaseAlignmentScore(org: Organization): number {
+    let score = 50; // Base score
+
+    // Focus area breadth bonus (more focus areas = more alignment potential)
+    if (org.focusAreas && org.focusAreas.length > 0) {
+        score += Math.min(20, org.focusAreas.length * 5);
+    }
+
+    // Region presence bonus
+    if (org.region) {
+        score += 10;
+    }
+
+    // Verification boost
+    if (org.verificationStatus === "verified") {
+        score += 10;
+    }
+
+    // Confidence factor bonus (scaled)
+    const confidenceFactor = (org.confidence || 75) / 100;
+    score += Math.round(10 * confidenceFactor);
+
+    return Math.min(100, Math.max(0, Math.round(score)));
+}
+
+/**
  * Calculate alignment score based on organization attributes and search params
+ * If no filters are applied, returns base score for consistency
  */
 function calculateAlignmentScore(org: Organization, params: SearchParams): number {
-    let score = 50; // Base score
+    // Use base score for consistency when no specific filters are applied
+    const hasActiveFilters = params.focusArea || params.region || params.fundingType;
+
+    if (!hasActiveFilters) {
+        return calculateBaseAlignmentScore(org);
+    }
+
+    // Start with base score when filters are applied
+    let score = 50;
 
     // Focus area match
     if (params.focusArea) {
@@ -19,12 +57,16 @@ function calculateAlignmentScore(org: Organization, params: SearchParams): numbe
             (area) => area.toLowerCase() === params.focusArea?.toLowerCase()
         );
         if (areaMatch) score += 20;
+    } else if (org.focusAreas && org.focusAreas.length > 0) {
+        score += Math.min(15, org.focusAreas.length * 4);
     }
 
     // Region match
     if (params.region) {
         const regionMatch = org.region.toLowerCase().includes(params.region.toLowerCase());
         if (regionMatch) score += 15;
+    } else if (org.region) {
+        score += 8;
     }
 
     // Funding type match
@@ -35,8 +77,9 @@ function calculateAlignmentScore(org: Organization, params: SearchParams): numbe
     // Verification boost
     if (org.verificationStatus === "verified") score += 5;
 
-    // Apply confidence factor
-    score = score * (org.confidence / 100);
+    // Apply confidence factor (scaled to not dominate)
+    const confidenceFactor = (org.confidence || 75) / 100;
+    score = Math.round(score * (0.7 + 0.3 * confidenceFactor));
 
     return Math.min(100, Math.max(0, Math.round(score)));
 }
@@ -160,7 +203,8 @@ export async function getOrganizationById(id: string): Promise<SearchResult | nu
                 .single();
 
             if (!error && data) {
-                return {
+                // Build org object first to calculate consistent alignment score
+                const org: Organization = {
                     id: data.id,
                     name: data.name,
                     type: data.type,
@@ -176,7 +220,11 @@ export async function getOrganizationById(id: string): Promise<SearchResult | nu
                     targetBeneficiaries: data.target_beneficiaries?.map((tb: any) => tb.beneficiary) || [],
                     partnerHistory: data.partner_history?.map((ph: any) => ph.partner_name) || [],
                     confidence: data.confidence || 75,
-                    alignmentScore: data.alignment_score || data.confidence || 75,
+                };
+
+                return {
+                    ...org,
+                    alignmentScore: calculateBaseAlignmentScore(org),
                 };
             }
         }
@@ -185,12 +233,12 @@ export async function getOrganizationById(id: string): Promise<SearchResult | nu
     }
 
     // Fallback to mock data
-    const org = mockOrganizations.find((o) => o.id === id);
-    if (!org) return null;
+    const mockOrg = mockOrganizations.find((o) => o.id === id);
+    if (!mockOrg) return null;
 
     return {
-        ...org,
-        alignmentScore: org.confidence || 75,
+        ...mockOrg,
+        alignmentScore: calculateBaseAlignmentScore(mockOrg),
     };
 }
 

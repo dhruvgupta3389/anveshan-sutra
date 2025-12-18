@@ -10,6 +10,7 @@ import {
   updateOrganization,
   getOrganizationById,
 } from "@/lib/services/organizations";
+import { useUserStore } from "@/lib/stores/userStore";
 
 // Domain to sub-areas mapping
 const DOMAIN_SUBAREAS: Record<string, { icon: any; label: string; helper: string; subareas: string[] }> = {
@@ -218,6 +219,8 @@ export default function OrgSubmit() {
           navigate(`/organization/${id}`);
         }, 1500);
       } else {
+        // Mark that user now has an organization profile
+        useUserStore.getState().setHasOrganization(true);
         setSubmittedOrgId(result.organization?.id || null);
         setIsSubmitted(true);
       }

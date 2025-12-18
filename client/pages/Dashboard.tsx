@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { Search, Plus, MapPin, Tag, AlertCircle } from "lucide-react";
+import { Search, Plus, MapPin, Tag, AlertCircle, HelpCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MatchExplanation from "@/components/MatchExplanation";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState, useEffect } from "react";
 import { SearchResult, SearchResponse } from "@shared/api";
 
@@ -185,11 +186,35 @@ export default function Dashboard() {
           {/* Results */}
           {hasSearched && results.length > 0 ? (
             <div className="space-y-6 mb-12">
-              <div className="flex items-baseline gap-3">
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Results</h2>
-                <span className="text-lg text-muted-foreground">
-                  ({results.length} {results.length === 1 ? "organization" : "organizations"})
-                </span>
+              <div>
+                <div className="flex items-baseline gap-3">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Results</h2>
+                  <span className="text-lg text-muted-foreground">
+                    ({results.length} relevant {results.length === 1 ? "organization" : "organizations"})
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="text-sm text-muted-foreground">
+                    Estimated time saved: ~48 minutes (per search)
+                  </span>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="text-muted-foreground hover:text-foreground transition-colors">
+                          <HelpCircle className="w-3.5 h-3.5" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-sm">
+                          Manual research typically takes ~60 minutes. Drivya's matching reduces this to ~12 minutes by consolidating verified data in one place.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <p className="text-xs text-muted-foreground/70 mt-0.5">
+                  Compared to manual research across multiple websites
+                </p>
               </div>
 
               {results.map((org) => (

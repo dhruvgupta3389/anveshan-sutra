@@ -25,6 +25,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SubmitOrganization from "./pages/SubmitOrganization";
 import ProfileSettings from "./pages/ProfileSettings";
+import RoleIntentOnboarding from "./pages/RoleIntentOnboarding";
+import RequireOnboarding from "./components/RequireOnboarding";
 
 // TextMaker modules
 import TextExtractor from "@/components/textmaker/modules/TextExtractor";
@@ -48,20 +50,27 @@ export default function App() {
               <Route path="/features" element={<Features />} />
               <Route path="/about" element={<About />} />
               <Route path="/auth" element={<AuthPage />} />
-              <Route path="/dashboard" element={<NGODashboard />} />
 
-              <Route path="/search" element={<Search />} />
+              {/* Onboarding - mandatory role + intent selection */}
+              <Route path="/onboarding" element={<RoleIntentOnboarding />} />
+
+              {/* Protected Routes - require onboarding */}
+              <Route path="/dashboard" element={<RequireOnboarding><NGODashboard /></RequireOnboarding>} />
+              <Route path="/search" element={<RequireOnboarding><Search /></RequireOnboarding>} />
+              <Route path="/shortlist" element={<RequireOnboarding><Shortlist /></RequireOnboarding>} />
+              {/* Org submit routes - require onboarding but NOT org profile */}
+              <Route path="/org-submit" element={<RequireOnboarding requireOrg={false}><OrgSubmit /></RequireOnboarding>} />
+              <Route path="/submit-organization" element={<RequireOnboarding requireOrg={false}><SubmitOrganization /></RequireOnboarding>} />
+
+              {/* Public Routes */}
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/submit-organization" element={<SubmitOrganization />} />
-              <Route path="/shortlist" element={<Shortlist />} />
               <Route path="/profile" element={<ProfileSettings />} />
               <Route path="/org-edit/:id" element={<OrgSubmit />} />
               <Route path="/org-profile/:id" element={<OrgProfileDetail />} />
               <Route path="/organization/:id" element={<OrgProfileDetail />} />
               <Route path="/ppt/:id" element={<PPTViewer />} />
-              <Route path="/org-submit" element={<OrgSubmit />} />
               <Route path="/textmaker" element={<TextMaker />} />
 
               {/* TextMaker / AI Tools Routes */}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, Zap, Target, ArrowRight, Clock, Users, CheckCircle } from "lucide-react";
+import { Search, Zap, Target, ArrowRight, Clock, Users, CheckCircle, Heart, Rocket, Building } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -86,7 +86,149 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 2: Primary Feature Explanation */}
+      {/* Section 2: Role-Based Sections - Who is Drivya.AI for? */}
+      <section id="for-you" className="py-16 px-4 sm:px-6 bg-gradient-to-b from-background to-secondary/5">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
+              Who is Drivya.AI for?
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Identify your role and discover what you can do
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* For NGOs - Green Theme */}
+            <div
+              id="for-ngos"
+              className="bg-emerald-50/50 dark:bg-emerald-950/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 rounded-xl flex items-center justify-center">
+                  <Heart className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-300">
+                  For NGOs
+                </h3>
+              </div>
+
+              <p className="text-foreground/80 mb-5 leading-relaxed">
+                Find aligned partners, funding opportunities, and incubators without wasting weeks on outreach.
+              </p>
+
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <span>Discover relevant CSR and incubator partners</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <span>See why an organization aligns before contacting</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <span>Submit your organization for visibility</span>
+                </li>
+              </ul>
+
+              <Link
+                to="/search"
+                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                Find Partners
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* For Incubators - Blue Theme */}
+            <div
+              id="for-incubators"
+              className="bg-blue-50/50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center">
+                  <Rocket className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="text-xl font-bold text-blue-800 dark:text-blue-300">
+                  For Incubators
+                </h3>
+              </div>
+
+              <p className="text-foreground/80 mb-5 leading-relaxed">
+                Identify NGOs and corporates that align with your focus areas, geography, and stage.
+              </p>
+
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span>Find NGOs for pilots and programs</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span>Identify CSR partners for funding and scale</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span>Evaluate alignment before collaboration</span>
+                </li>
+              </ul>
+
+              <Link
+                to="/search"
+                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                Explore Matches
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* For CSR Teams - Orange Theme */}
+            <div
+              id="for-csr"
+              className="bg-amber-50/50 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/50 rounded-xl flex items-center justify-center">
+                  <Building className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h3 className="text-xl font-bold text-amber-800 dark:text-amber-300">
+                  For CSR Teams
+                </h3>
+              </div>
+
+              <p className="text-foreground/80 mb-5 leading-relaxed">
+                Reduce CSR discovery risk by finding credible, aligned organizations with verified data.
+              </p>
+
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Discover NGOs aligned with CSR themes</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Review impact data before outreach</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-foreground/70">
+                  <CheckCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <span>Shortlist partners faster</span>
+                </li>
+              </ul>
+
+              <Link
+                to="/search"
+                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+              >
+                Discover Organizations
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3: Primary Feature Explanation */}
 
 
       <section className="py-16 px-4 sm:px-6 bg-secondary/5">

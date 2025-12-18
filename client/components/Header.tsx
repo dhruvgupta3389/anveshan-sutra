@@ -107,6 +107,26 @@ export default function Header() {
 
             {/* 2. Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">
+              {/* Role-Based Navigation Links */}
+              <a
+                href="/#for-ngos"
+                className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+              >
+                For NGOs
+              </a>
+              <a
+                href="/#for-incubators"
+                className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+              >
+                For Incubators
+              </a>
+              <a
+                href="/#for-csr"
+                className="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+              >
+                For CSR
+              </a>
+
               {/* Features Link */}
               <Link
                 to="/features"
@@ -249,6 +269,31 @@ export default function Header() {
                   </div>
                 </div>
               )}
+
+              {/* Mobile Role-Based Navigation Links */}
+              <a
+                href="/#for-ngos"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 font-medium transition-colors"
+              >
+                For NGOs
+              </a>
+              <a
+                href="/#for-incubators"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 font-medium transition-colors"
+              >
+                For Incubators
+              </a>
+              <a
+                href="/#for-csr"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 font-medium transition-colors"
+              >
+                For CSR Teams
+              </a>
+
+              <div className="h-px bg-border my-1" />
 
               <Link
                 to="/features"
