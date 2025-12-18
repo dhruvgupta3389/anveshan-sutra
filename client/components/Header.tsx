@@ -110,19 +110,19 @@ export default function Header() {
               {/* Role-Based Navigation Links */}
               <a
                 href="/#for-ngos"
-                className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                className="text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors"
               >
                 For NGOs
               </a>
               <a
                 href="/#for-incubators"
-                className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                className="text-sm font-medium text-sky-500 dark:text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 transition-colors"
               >
                 For Incubators
               </a>
               <a
                 href="/#for-csr"
-                className="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+                className="text-sm font-medium text-orange-500 dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 transition-colors"
               >
                 For CSR
               </a>
@@ -274,21 +274,21 @@ export default function Header() {
               <a
                 href="/#for-ngos"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 font-medium transition-colors"
+                className="flex items-center gap-3 p-3 rounded-xl text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/30 font-medium transition-colors"
               >
                 For NGOs
               </a>
               <a
                 href="/#for-incubators"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-xl text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 font-medium transition-colors"
+                className="flex items-center gap-3 p-3 rounded-xl text-sky-500 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-950/30 font-medium transition-colors"
               >
                 For Incubators
               </a>
               <a
                 href="/#for-csr"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-xl text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 font-medium transition-colors"
+                className="flex items-center gap-3 p-3 rounded-xl text-orange-500 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/30 font-medium transition-colors"
               >
                 For CSR Teams
               </a>

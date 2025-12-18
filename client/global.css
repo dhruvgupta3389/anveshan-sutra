@@ -8,102 +8,128 @@
 @layer base {
 
   /**
-   * Tailwind CSS theme
-   * New Brand Color Palette:
-   * #3D52A0 - Deep Blue (primary, headings, strong emphasis)
-   * #7091E6 - Medium Blue (secondary, active states, highlights)
-   * #8697C4 - Muted Blue (accent, subtle emphasis)
-   * #ADBBDA - Light Blue-Gray (borders, cards)
-   * #EDE8F5 - Lavender White (backgrounds)
+   * Drivya.AI Color System
+   * 
+   * NEUTRAL BASE:
+   * Background: #F8FAFC (light) / #0F172A (dark)
+   * Primary Text: #0F172A (light) / #F8FAFC (dark)
+   * Secondary Text: #475569 (light) / #94A3B8 (dark)
+   * 
+   * PRIMARY ACTION: #2563EB (blue-600)
+   * Used for: Main CTA buttons, active states, key highlights
+   * 
+   * ROLE ACCENTS (via Tailwind classes):
+   * NGO: #16A34A (green-600)
+   * Incubator: #0EA5E9 (sky-500)
+   * CSR: #F97316 (orange-500)
+   * 
+   * MATCH SCORE COLORS:
+   * <50%: #EF4444 (red-500)
+   * 50-69%: #F59E0B (amber-500)
+   * ≥70%: #16A34A (green-600)
    */
   :root {
-    /* Light mode - Clean, professional blue theme */
-    --background: 263 38% 96%;
-    --foreground: 225 45% 25%;
+    /* Neutral Base - Light Mode */
+    --background: 210 40% 98%;
+    /* #F8FAFC */
+    --foreground: 222 47% 11%;
+    /* #0F172A */
 
     --card: 0 0% 100%;
-    --card-foreground: 225 45% 25%;
+    /* white */
+    --card-foreground: 222 47% 11%;
+    /* #0F172A */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 225 45% 25%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Primary: Deep Blue #3D52A0 */
-    --primary: 225 45% 43%;
+    /* Primary: Blue #2563EB */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Medium Blue #7091E6 */
-    --secondary: 221 69% 67%;
-    --secondary-foreground: 225 45% 15%;
+    /* Secondary: Neutral gray for secondary actions */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 16% 47%;
+    /* #64748B */
 
-    /* Muted: Light Blue-Gray #ADBBDA */
-    --muted: 222 30% 92%;
-    --muted-foreground: 222 20% 45%;
+    /* Muted: Subtle backgrounds */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    /* #475569 muted text */
 
-    /* Accent: Muted Blue #8697C4 */
-    --accent: 222 32% 65%;
-    --accent-foreground: 225 45% 15%;
+    /* Accent: For highlights (uses primary by default) */
+    --accent: 210 40% 96%;
+    --accent-foreground: 217 91% 60%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 85%;
-    --input: 222 30% 92%;
-    --ring: 225 45% 43%;
+    --border: 214 32% 91%;
+    /* #E2E8F0 */
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
 
     --radius: 0.625rem;
 
-    --sidebar-background: 225 45% 25%;
-    --sidebar-foreground: 263 38% 96%;
-    --sidebar-primary: 221 69% 67%;
-    --sidebar-primary-foreground: 225 45% 15%;
-    --sidebar-accent: 222 32% 65%;
+    /* Sidebar - Dark sidebar for contrast */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 91% 60%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 225 45% 35%;
-    --sidebar-ring: 221 69% 67%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .dark {
-    /* Dark mode - Rich, deep blue theme */
-    --background: 225 45% 10%;
-    --foreground: 263 38% 95%;
+    /* Neutral Base - Dark Mode */
+    --background: 222 47% 11%;
+    /* #0F172A */
+    --foreground: 210 40% 98%;
+    /* #F8FAFC */
 
-    --card: 225 40% 15%;
-    --card-foreground: 263 38% 95%;
+    --card: 217 33% 17%;
+    /* #1E293B */
+    --card-foreground: 210 40% 98%;
 
-    --popover: 225 40% 15%;
-    --popover-foreground: 263 38% 95%;
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
 
-    /* Primary: Brighter blue for dark mode */
-    --primary: 221 69% 60%;
-    --primary-foreground: 225 45% 10%;
+    /* Primary: Slightly brighter blue for dark mode */
+    --primary: 217 91% 65%;
+    --primary-foreground: 222 47% 11%;
 
-    /* Secondary: Medium Blue */
-    --secondary: 222 32% 55%;
-    --secondary-foreground: 263 38% 95%;
+    /* Secondary */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 215 20% 65%;
 
     /* Muted */
-    --muted: 225 40% 20%;
-    --muted-foreground: 222 30% 70%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    /* #94A3B8 */
 
     /* Accent */
-    --accent: 222 32% 50%;
-    --accent-foreground: 263 38% 95%;
+    --accent: 217 33% 22%;
+    --accent-foreground: 217 91% 65%;
 
-    --destructive: 0 62% 40%;
+    --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 225 40% 25%;
-    --input: 225 40% 20%;
-    --ring: 221 69% 60%;
+    --border: 217 33% 22%;
+    /* #334155 */
+    --input: 217 33% 22%;
+    --ring: 217 91% 65%;
 
-    --sidebar-background: 225 45% 8%;
-    --sidebar-foreground: 263 38% 95%;
-    --sidebar-primary: 221 69% 60%;
-    --sidebar-primary-foreground: 225 45% 10%;
-    --sidebar-accent: 222 32% 50%;
-    --sidebar-accent-foreground: 225 45% 10%;
-    --sidebar-border: 225 40% 20%;
-    --sidebar-ring: 221 69% 60%;
+    /* Sidebar - Dark mode sidebar */
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 65%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 91% 65%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 217 91% 65%;
   }
 }
 

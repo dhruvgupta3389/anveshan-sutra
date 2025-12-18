@@ -99,16 +99,16 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {/* For NGOs - Green Theme */}
+            {/* For NGOs - Green Theme (#16A34A) */}
             <div
               id="for-ngos"
-              className="bg-emerald-50/50 dark:bg-emerald-950/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300"
+              className="bg-green-50/50 dark:bg-green-950/20 border-2 border-green-200 dark:border-green-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 rounded-xl flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center">
+                  <Heart className="w-6 h-6 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-300">
+                <h3 className="text-xl font-bold text-green-700 dark:text-green-300">
                   For NGOs
                 </h3>
               </div>
@@ -119,38 +119,38 @@ export default function Home() {
 
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
                   <span>Discover relevant CSR and incubator partners</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
                   <span>See why an organization aligns before contacting</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
                   <span>Submit your organization for visibility</span>
                 </li>
               </ul>
 
               <Link
                 to="/search"
-                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Find Partners
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
-            {/* For Incubators - Blue Theme */}
+            {/* For Incubators - Sky Blue Theme (#0EA5E9) */}
             <div
               id="for-incubators"
-              className="bg-blue-50/50 dark:bg-blue-950/20 border-2 border-blue-200 dark:border-blue-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300"
+              className="bg-sky-50/50 dark:bg-sky-950/20 border-2 border-sky-200 dark:border-sky-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-sky-500/10 transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center">
-                  <Rocket className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="w-12 h-12 bg-sky-100 dark:bg-sky-900/50 rounded-xl flex items-center justify-center">
+                  <Rocket className="w-6 h-6 text-sky-500 dark:text-sky-400" />
                 </div>
-                <h3 className="text-xl font-bold text-blue-800 dark:text-blue-300">
+                <h3 className="text-xl font-bold text-sky-700 dark:text-sky-300">
                   For Incubators
                 </h3>
               </div>
@@ -161,38 +161,38 @@ export default function Home() {
 
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-sky-500 dark:text-sky-400 mt-0.5 flex-shrink-0" />
                   <span>Find NGOs for pilots and programs</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-sky-500 dark:text-sky-400 mt-0.5 flex-shrink-0" />
                   <span>Identify CSR partners for funding and scale</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-sky-500 dark:text-sky-400 mt-0.5 flex-shrink-0" />
                   <span>Evaluate alignment before collaboration</span>
                 </li>
               </ul>
 
               <Link
                 to="/search"
-                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Explore Matches
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
-            {/* For CSR Teams - Orange Theme */}
+            {/* For CSR Teams - Orange Theme (#F97316) */}
             <div
               id="for-csr"
-              className="bg-amber-50/50 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300"
+              className="bg-orange-50/50 dark:bg-orange-950/20 border-2 border-orange-200 dark:border-orange-800 rounded-2xl p-6 hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/50 rounded-xl flex items-center justify-center">
-                  <Building className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/50 rounded-xl flex items-center justify-center">
+                  <Building className="w-6 h-6 text-orange-500 dark:text-orange-400" />
                 </div>
-                <h3 className="text-xl font-bold text-amber-800 dark:text-amber-300">
+                <h3 className="text-xl font-bold text-orange-700 dark:text-orange-300">
                   For CSR Teams
                 </h3>
               </div>
@@ -203,22 +203,22 @@ export default function Home() {
 
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-orange-500 dark:text-orange-400 mt-0.5 flex-shrink-0" />
                   <span>Discover NGOs aligned with CSR themes</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-orange-500 dark:text-orange-400 mt-0.5 flex-shrink-0" />
                   <span>Review impact data before outreach</span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-foreground/70">
-                  <CheckCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-orange-500 dark:text-orange-400 mt-0.5 flex-shrink-0" />
                   <span>Shortlist partners faster</span>
                 </li>
               </ul>
 
               <Link
                 to="/search"
-                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
+                className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 Discover Organizations
                 <ArrowRight className="w-4 h-4" />

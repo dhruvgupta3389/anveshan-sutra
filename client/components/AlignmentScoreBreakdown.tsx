@@ -43,30 +43,34 @@ function calculateBreakdown(org: SearchResult): {
 
 /**
  * Get strength label based on alignment score
+ * Match score color logic:
+ * - <50%: #EF4444 (red-500) - Low
+ * - 50-69%: #F59E0B (amber-500) - Moderate
+ * - ≥70%: #16A34A (green-600) - High
  */
 function getStrengthLabel(score: number): {
     label: string;
     color: string;
     bgColor: string;
 } {
-    if (score >= 71) {
+    if (score >= 70) {
         return {
             label: "High alignment",
-            color: "text-emerald-700 dark:text-emerald-400",
-            bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
+            color: "text-green-600 dark:text-green-400",
+            bgColor: "bg-green-50 dark:bg-green-900/20",
         };
     }
-    if (score >= 41) {
+    if (score >= 50) {
         return {
             label: "Moderate alignment",
-            color: "text-blue-700 dark:text-blue-400",
-            bgColor: "bg-blue-50 dark:bg-blue-900/20",
+            color: "text-amber-500 dark:text-amber-400",
+            bgColor: "bg-amber-50 dark:bg-amber-900/20",
         };
     }
     return {
         label: "Low alignment",
-        color: "text-slate-600 dark:text-slate-400",
-        bgColor: "bg-slate-50 dark:bg-slate-800/50",
+        color: "text-red-500 dark:text-red-400",
+        bgColor: "bg-red-50 dark:bg-red-900/20",
     };
 }
 
