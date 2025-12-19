@@ -21,14 +21,20 @@ export default function Home() {
                 Discover aligned organizations faster, with clear reasons before outreach.
               </p>
 
-              {/* CTA */}
+              {/* CTAs */}
               <div className="flex flex-wrap gap-4">
-                <Link
-                  to="/org-submit"
+                <a
+                  href="#for-you"
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl"
                 >
-                  Set Up Your Search
+                  Get Started
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+                <Link
+                  to="/search"
+                  className="inline-flex items-center gap-2 px-8 py-4 border-2 border-border text-foreground rounded-xl hover:bg-muted/50 transition-all duration-300 font-semibold text-lg"
+                >
+                  Browse Organizations
                 </Link>
               </div>
             </div>
@@ -88,15 +94,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 2: Role-Based Sections - Who is Drivya.AI for? */}
+      {/* Section 2: Role Selection - Choose Your Path */}
       <section id="for-you" className="py-16 px-4 sm:px-6 bg-gradient-to-b from-background to-secondary/5">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-              Who is Drivya.AI for?
+              I am a...
             </h2>
             <p className="text-muted-foreground text-lg">
-              Identify your role and discover what you can do
+              Select your role to see relevant organizations
             </p>
           </div>
 
