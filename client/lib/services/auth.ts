@@ -1,6 +1,11 @@
 /**
  * Authentication Service
  * Direct Supabase Auth calls
+ * 
+ * Supports:
+ * - Email Magic Link (OTP) - passwordless
+ * - Google OAuth
+ * - LinkedIn OAuth
  */
 
 import { supabase } from '../supabase';
@@ -9,7 +14,100 @@ import { User, AuthResponse } from '@shared/api';
 export interface AuthUser extends User { }
 
 /**
- * Sign up a new user
+ * Sign in with Email Magic Link (OTP)
+ * Sends a magic link to the user's email - no password required
+ */
+export async function signInWithMagicLink(
+    email: string,
+    redirectTo?: string
+): Promise<{ success: boolean; error: string | null }> {
+    try {
+        if (!supabase) {
+            return { success: false, error: 'Supabase not configured' };
+        }
+
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+                emailRedirectTo: redirectTo || `${window.location.origin}/auth/callback`,
+            },
+        });
+
+        if (error) {
+            console.error('Magic link error:', error);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true, error: null };
+    } catch (error: any) {
+        console.error('signInWithMagicLink error:', error);
+        return { success: false, error: error.message || 'Failed to send magic link' };
+    }
+}
+
+/**
+ * Sign in with Google OAuth
+ */
+export async function signInWithGoogle(
+    redirectTo?: string
+): Promise<{ success: boolean; error: string | null }> {
+    try {
+        if (!supabase) {
+            return { success: false, error: 'Supabase not configured' };
+        }
+
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: redirectTo || `${window.location.origin}/auth/callback`,
+            },
+        });
+
+        if (error) {
+            console.error('Google OAuth error:', error);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true, error: null };
+    } catch (error: any) {
+        console.error('signInWithGoogle error:', error);
+        return { success: false, error: error.message || 'Failed to sign in with Google' };
+    }
+}
+
+/**
+ * Sign in with LinkedIn OAuth
+ */
+export async function signInWithLinkedIn(
+    redirectTo?: string
+): Promise<{ success: boolean; error: string | null }> {
+    try {
+        if (!supabase) {
+            return { success: false, error: 'Supabase not configured' };
+        }
+
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'linkedin_oidc',
+            options: {
+                redirectTo: redirectTo || `${window.location.origin}/auth/callback`,
+            },
+        });
+
+        if (error) {
+            console.error('LinkedIn OAuth error:', error);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true, error: null };
+    } catch (error: any) {
+        console.error('signInWithLinkedIn error:', error);
+        return { success: false, error: error.message || 'Failed to sign in with LinkedIn' };
+    }
+}
+
+/**
+ * @deprecated Use signInWithMagicLink instead - password auth is disabled
+ * Sign up a new user (kept for backward compatibility)
  */
 export async function signUp(
     email: string,
@@ -17,119 +115,33 @@ export async function signUp(
     name: string,
     role: 'ngo' | 'funder'
 ): Promise<{ user: AuthUser | null; error: string | null }> {
-    try {
-        if (!supabase) {
-            return { user: null, error: 'Supabase not configured' };
-        }
-
-        // Sign up with Supabase Auth
-        const { data: authData, error: authError } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    name,
-                    role,
-                    profile_complete: false,
-                    verified: false,
-                },
-            },
-        });
-
-        if (authError) {
-            console.error('Supabase auth signup error:', authError);
-            return { user: null, error: authError.message };
-        }
-
-        if (!authData.user) {
-            return { user: null, error: 'Failed to create user' };
-        }
-
-        // Create user profile in database
-        const { error: profileError } = await supabase
-            .from('user_profiles')
-            .insert({
-                id: authData.user.id,
-                email,
-                name,
-                role,
-                profile_complete: false,
-                verified: false,
-            });
-
-        if (profileError) {
-            console.error('Profile creation error:', profileError);
-            // Don't fail signup if profile creation fails, user can update later
-        }
-
-        const user: AuthUser = {
-            id: authData.user.id,
-            email,
-            name,
-            role,
-            profile_complete: false,
-            verified: false,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-        };
-
-        return { user, error: null };
-    } catch (error: any) {
-        console.error('SignUp error:', error);
-        return { user: null, error: error.message || 'Signup failed' };
+    // Redirect to magic link flow
+    console.warn('Password signup is deprecated. Use signInWithMagicLink instead.');
+    const result = await signInWithMagicLink(email);
+    if (result.success) {
+        return { user: null, error: 'Check your email for a magic link to sign in' };
     }
+    return { user: null, error: result.error };
 }
 
+
 /**
- * Sign in an existing user
+ * @deprecated Use signInWithMagicLink instead - password auth is disabled
+ * Sign in an existing user (kept for backward compatibility)
  */
 export async function signIn(
     email: string,
     password: string
 ): Promise<{ user: AuthUser | null; token: string | null; error: string | null }> {
-    try {
-        if (!supabase) {
-            return { user: null, token: null, error: 'Supabase not configured' };
-        }
-
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) {
-            console.error('Supabase auth login error:', error);
-            return { user: null, token: null, error: 'Invalid email or password' };
-        }
-
-        if (!data.session || !data.user) {
-            return { user: null, token: null, error: 'Failed to create session' };
-        }
-
-        // Get user profile from database
-        const { data: profileData } = await supabase
-            .from('user_profiles')
-            .select('*')
-            .eq('id', data.user.id)
-            .single();
-
-        const user: AuthUser = {
-            id: data.user.id,
-            email: data.user.email || email,
-            name: profileData?.name || data.user.user_metadata?.name || email.split('@')[0],
-            role: profileData?.role || data.user.user_metadata?.role || 'ngo',
-            profile_complete: profileData?.profile_complete || false,
-            verified: profileData?.verified || false,
-            created_at: profileData?.created_at || new Date().toISOString(),
-            updated_at: profileData?.updated_at || new Date().toISOString(),
-        };
-
-        return { user, token: data.session.access_token, error: null };
-    } catch (error: any) {
-        console.error('SignIn error:', error);
-        return { user: null, token: null, error: error.message || 'Login failed' };
+    // Redirect to magic link flow
+    console.warn('Password signin is deprecated. Use signInWithMagicLink instead.');
+    const result = await signInWithMagicLink(email);
+    if (result.success) {
+        return { user: null, token: null, error: 'Check your email for a magic link to sign in' };
     }
+    return { user: null, token: null, error: result.error };
 }
+
 
 /**
  * Sign out the current user

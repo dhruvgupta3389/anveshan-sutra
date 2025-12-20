@@ -30,6 +30,7 @@ import ProfileSettings from "./pages/ProfileSettings";
 import RoleIntentOnboarding from "./pages/RoleIntentOnboarding";
 import RoleEntry from "./pages/RoleEntry";
 import RequireOnboarding from "./components/RequireOnboarding";
+import RequireAuth from "./components/RequireAuth";
 
 // TextMaker modules
 import TextExtractor from "@/components/textmaker/modules/TextExtractor";
@@ -64,25 +65,25 @@ export default function App() {
                 {/* Onboarding - mandatory role + intent selection */}
                 <Route path="/onboarding" element={<RoleIntentOnboarding />} />
 
-                {/* Public Browse Routes - no login required */}
+                {/* Public Browse Routes - no login required (basic view only) */}
                 <Route path="/search" element={<Search />} />
                 <Route path="/organization/:id" element={<OrgProfileDetail />} />
                 <Route path="/org-profile/:id" element={<OrgProfileDetail />} />
 
-                {/* Protected Routes - require onboarding/auth */}
-                <Route path="/dashboard" element={<RequireOnboarding><NGODashboard /></RequireOnboarding>} />
-                <Route path="/shortlist" element={<RequireOnboarding><Shortlist /></RequireOnboarding>} />
+                {/* Protected Routes - require auth + role setup */}
+                <Route path="/dashboard" element={<RequireAuth requireSetup><NGODashboard /></RequireAuth>} />
+                <Route path="/shortlist" element={<RequireAuth requireSetup><Shortlist /></RequireAuth>} />
 
-                {/* Org submit routes - auth handled by page or role entry */}
-                <Route path="/org-submit" element={<OrgSubmit />} />
-                <Route path="/submit-organization" element={<SubmitOrganization />} />
+                {/* Org submit routes - require auth */}
+                <Route path="/org-submit" element={<RequireAuth><OrgSubmit /></RequireAuth>} />
+                <Route path="/submit-organization" element={<RequireAuth><SubmitOrganization /></RequireAuth>} />
 
-                {/* Other Public Routes */}
+                {/* Other Routes */}
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-                <Route path="/profile" element={<ProfileSettings />} />
-                <Route path="/org-edit/:id" element={<OrgSubmit />} />
+                <Route path="/profile" element={<RequireAuth><ProfileSettings /></RequireAuth>} />
+                <Route path="/org-edit/:id" element={<RequireAuth><OrgSubmit /></RequireAuth>} />
                 <Route path="/ppt/:id" element={<PPTViewer />} />
                 <Route path="/textmaker" element={<TextMaker />} />
 
@@ -92,6 +93,7 @@ export default function App() {
                 <Route path="/tools/powerpoint" element={<PowerPointGenerator />} />
                 <Route path="/tools/research-paper" element={<ResearchPaperGenerator />} />
                 <Route path="/tools/bi-dashboard" element={<div className="p-6"><h1 className="text-2xl font-bold">Power BI Dashboard - Coming Soon</h1></div>} />
+
 
                 {/* Legacy Routes (keeping for backward compatibility) */}
                 <Route path="/home" element={<Home />} />

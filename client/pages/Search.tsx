@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useUserStore } from "@/lib/stores/userStore";
+import { useAccessCheck } from "@/components/RequireAuth";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, ExternalLink, CheckCircle2, Search as SearchIcon, HelpCircle } from "lucide-react";
+import { Heart, ExternalLink, CheckCircle2, Search as SearchIcon, HelpCircle, AlertTriangle, X } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { searchOrganizations } from "@/lib/services/organizations";
 import { SearchResult } from "@shared/api";
@@ -89,12 +91,20 @@ export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { role, hasOrganization } = useUserStore();
+  const { needsSetup, showSetupPrompt } = useAccessCheck();
   const [results, setResults] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [focusAreas, setFocusAreas] = useState<string[]>([]);
   const [regions, setRegions] = useState<string[]>([]);
   const [shortlist, setShortlist] = useState<Set<string>>(new Set());
+
+  // Incubator setup prompt - dismissible
+  const [dismissedSetupPrompt, setDismissedSetupPrompt] = useState(() => {
+    return localStorage.getItem("dismissedIncubatorSetup") === "true";
+  });
+
 
   // Guided intro state - persisted to localStorage
   const [showGuidedIntro, setShowGuidedIntro] = useState(() => {
@@ -239,6 +249,68 @@ export default function Search() {
             {roleContext.subtitle}
           </p>
         </div>
+
+        {/* NGO BLOCKING BANNER - Must complete setup */}
+        {needsSetup && (
+          <div className="mb-8 p-8 bg-amber-50 dark:bg-amber-950/30 border-2 border-amber-200 dark:border-amber-800 rounded-2xl text-center">
+            <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-8 h-8 text-amber-600" />
+            </div>
+            <h2 className="text-xl font-bold text-foreground mb-2">
+              Set up your NGO profile to find partners
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              Tell us about your organization so we can show you relevant CSR partners and incubators that align with your mission.
+            </p>
+            <Button
+              size="lg"
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => navigate("/org-submit")}
+            >
+              Complete Setup
+            </Button>
+          </div>
+        )}
+
+        {/* INCUBATOR SETUP PROMPT - Dismissible */}
+        {showSetupPrompt && !dismissedSetupPrompt && (
+          <div className="mb-8 p-4 bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800 rounded-xl">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-sky-100 dark:bg-sky-900/50 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="w-5 h-5 text-sky-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">
+                    Complete your Incubator profile to unlock alignment insights
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Save organizations, download PPTs, and see detailed matching scores.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <Button
+                  size="sm"
+                  className="bg-sky-500 hover:bg-sky-600"
+                  onClick={() => navigate("/org-submit")}
+                >
+                  Set Up Now
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setDismissedSetupPrompt(true);
+                    localStorage.setItem("dismissedIncubatorSetup", "true");
+                  }}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Guided First Match Intro - shows for first-time users */}
         {showGuidedIntro && (
