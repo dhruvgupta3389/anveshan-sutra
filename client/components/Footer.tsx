@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import footerLinks from "../data/footerLinks.json";
 import {
@@ -8,13 +8,17 @@ import {
   Github,
   Send,
   Heart,
-  Globe
+  Globe,
+  MessageSquare
 } from "lucide-react";
 import { Instagram } from "lucide-react";
 import { Youtube } from "lucide-react";
+import { PlatformFeedbackModal } from "@/components/feedback";
 
 export default function Footer() {
   const location = useLocation();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
@@ -96,7 +100,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      {/* Contact + Back to Top */}
+      {/* Contact + Feedback + Back to Top */}
       <div className="container mx-auto px-6 mt-10 flex flex-col md:flex-row justify-between items-center gap-4">
         {/* Contact */}
         <a
@@ -106,6 +110,17 @@ export default function Footer() {
         >
           support@drivya.ai
         </a>
+
+        {/* Give Feedback Button */}
+        <button
+          onClick={() => setFeedbackOpen(true)}
+          className="inline-flex items-center gap-2 text-background/70 hover:text-background transition focus:outline-none focus:ring-2 focus:ring-background"
+          aria-label="Give Feedback"
+        >
+          <MessageSquare className="w-4 h-4" />
+          Give Feedback
+        </button>
+
         {/* Back to Top */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -119,6 +134,9 @@ export default function Footer() {
       <div className="text-center text-background/50 text-sm mt-6 border-t border-background/20 pt-4">
         © {new Date().getFullYear()} Drivya.ai — All rights reserved.
       </div>
+
+      {/* Platform Feedback Modal */}
+      <PlatformFeedbackModal open={feedbackOpen} onOpenChange={setFeedbackOpen} />
     </footer>
   );
 }

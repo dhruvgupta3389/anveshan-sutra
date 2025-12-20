@@ -208,10 +208,10 @@ export default function AuthPage() {
                                 >
                                     <div className="text-center mb-8">
                                         <h1 className="text-3xl font-bold text-foreground mb-2">
-                                            Welcome to Drivya.AI
+                                            Sign in to continue
                                         </h1>
                                         <p className="text-muted-foreground">
-                                            Sign in to discover matching partners
+                                            Access detailed matches, alignment insights, and organization data.
                                         </p>
                                     </div>
 
@@ -263,7 +263,7 @@ export default function AuthPage() {
                                     </form>
 
                                     <p className="text-xs text-muted-foreground text-center mt-3">
-                                        No password needed. We'll email you a secure link.
+                                        No passwords. Secure login via email or trusted platforms.
                                     </p>
 
                                     {/* Divider */}

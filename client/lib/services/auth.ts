@@ -309,48 +309,9 @@ export async function updateProfile(updates: {
 }
 
 /**
- * Update user password
+ * Password-based authentication is disabled on Drivya.AI
+ * Use signInWithMagicLink, signInWithGoogle, or signInWithLinkedIn instead.
  */
-export async function updatePassword(
-    currentPassword: string,
-    newPassword: string
-): Promise<{ success: boolean; error: string | null }> {
-    try {
-        if (!supabase) {
-            return { success: false, error: 'Supabase not configured' };
-        }
-
-        // First verify current password by attempting to sign in
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user || !user.email) {
-            return { success: false, error: 'Not authenticated' };
-        }
-
-        // Verify current password
-        const { error: verifyError } = await supabase.auth.signInWithPassword({
-            email: user.email,
-            password: currentPassword,
-        });
-
-        if (verifyError) {
-            return { success: false, error: 'Current password is incorrect' };
-        }
-
-        // Update to new password
-        const { error: updateError } = await supabase.auth.updateUser({
-            password: newPassword,
-        });
-
-        if (updateError) {
-            return { success: false, error: updateError.message };
-        }
-
-        return { success: true, error: null };
-    } catch (error: any) {
-        console.error('UpdatePassword error:', error);
-        return { success: false, error: error.message || 'Failed to update password' };
-    }
-}
 
 /**
  * Upload avatar to Supabase Storage

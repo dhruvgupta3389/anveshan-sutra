@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import MatchExplanation from "@/components/MatchExplanation";
 import AlignmentScoreBreakdown from "@/components/AlignmentScoreBreakdown";
 import AuthPrompt from "@/components/AuthPrompt";
+import { CollaborationOutcomeFeedback, CommunitySignals } from "@/components/feedback";
 import { useAuth } from "@/hooks/useAuth";
 import { SearchResult } from "@shared/api";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,8 @@ export default function OrgProfileDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isShortlisted, setIsShortlisted] = useState(false);
+  const [showOutcomeFeedback, setShowOutcomeFeedback] = useState(false);
+  const [feedbackTrigger, setFeedbackTrigger] = useState<"view_profile" | "download_ppt" | "shortlist">("view_profile");
 
   useEffect(() => {
     if (!id) return;
@@ -71,7 +74,14 @@ export default function OrgProfileDetail() {
       });
       return;
     }
+    const wasShortlisted = isShortlisted;
     setIsShortlisted(!isShortlisted);
+
+    // Trigger outcome feedback when user shortlists (not unshortlists)
+    if (!wasShortlisted) {
+      setFeedbackTrigger("shortlist");
+      setTimeout(() => setShowOutcomeFeedback(true), 500);
+    }
   };
 
   const handlePPTClick = (e: React.MouseEvent) => {
@@ -415,6 +425,9 @@ export default function OrgProfileDetail() {
                   </p>
                 </CardContent>
               </Card>
+
+              {/* Community Signals */}
+              <CommunitySignals organizationId={org.id} />
             </div>
           </div>
         ) : (
@@ -429,6 +442,18 @@ export default function OrgProfileDetail() {
       </main>
 
       <Footer />
+
+      {/* Collaboration Outcome Feedback Modal */}
+      {org && (
+        <CollaborationOutcomeFeedback
+          open={showOutcomeFeedback}
+          onOpenChange={setShowOutcomeFeedback}
+          organizationId={org.id}
+          organizationName={org.name}
+          triggerAction={feedbackTrigger}
+        />
+      )}
     </div>
   );
 }
+
