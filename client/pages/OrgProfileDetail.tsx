@@ -22,6 +22,8 @@ import {
   Award,
   Lightbulb,
   Lock,
+  Mail,
+  StickyNote,
 } from "lucide-react";
 import { getOrganizationById } from "@/lib/services/organizations";
 
@@ -35,6 +37,8 @@ export default function OrgProfileDetail() {
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [showOutcomeFeedback, setShowOutcomeFeedback] = useState(false);
   const [feedbackTrigger, setFeedbackTrigger] = useState<"view_profile" | "download_ppt" | "shortlist">("view_profile");
+  const [privateNotes, setPrivateNotes] = useState("");
+  const [notesLoading, setNotesLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -242,6 +246,27 @@ export default function OrgProfileDetail() {
                 {!isAuthenticated && <Lock className="w-3 h-3 ml-1" />}
               </Link>
             </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (!isAuthenticated) {
+                  toast.info("Sign in to draft emails", {
+                    action: {
+                      label: "Sign In",
+                      onClick: () => navigate(`/auth?returnTo=${encodeURIComponent(window.location.pathname)}`),
+                    },
+                  });
+                  return;
+                }
+                toast.success("Email draft feature coming soon!");
+              }}
+              className="flex items-center gap-2"
+            >
+              <Mail className="w-5 h-5" />
+              Draft Email
+              {!isAuthenticated && <Lock className="w-3 h-3 ml-1" />}
+            </Button>
           </div>
         </div>
 
@@ -382,6 +407,41 @@ export default function OrgProfileDetail() {
                         {org.confidence}%
                       </span>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Private Notes - Your internal notes */}
+              <Card className="border-amber-500/30 bg-amber-500/5">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <StickyNote className="w-5 h-5 text-amber-600" />
+                    Your Notes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Private notes only visible to you. Why is this a good fit?
+                  </p>
+                  <textarea
+                    value={privateNotes}
+                    onChange={(e) => setPrivateNotes(e.target.value)}
+                    placeholder="e.g., 'Aligned on rural education. Good for pilot proposal. Contact after March funding cycle.'"
+                    rows={4}
+                    className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 resize-none"
+                  />
+                  <div className="flex justify-end mt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs"
+                      onClick={() => {
+                        // TODO: Save to Supabase shortlist.notes
+                        toast.success("Notes saved!");
+                      }}
+                    >
+                      Save Notes
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

@@ -59,6 +59,14 @@ interface FormData extends SubmitOrganizationRequest {
   maxGrantSize?: string;
   preferredNGOTypes?: string[];
   minYearsOperation?: number;
+  // NGO-specific fields
+  contactEmail: string;
+  yearRegistered: string;
+  beneficiaryScale: string;
+  needsFunding: boolean;
+  needsMentorship: boolean;
+  needsInfrastructure: boolean;
+  needsPilots: boolean;
 }
 
 const initialFormData: FormData = {
@@ -76,6 +84,14 @@ const initialFormData: FormData = {
   projects: [],
   confirmation: false,
   userRole: undefined,
+  // NGO-specific fields
+  contactEmail: "",
+  yearRegistered: "",
+  beneficiaryScale: "",
+  needsFunding: false,
+  needsMentorship: false,
+  needsInfrastructure: false,
+  needsPilots: false,
 };
 
 export default function OrgSubmit() {
@@ -123,6 +139,14 @@ export default function OrgSubmit() {
             org.type === "Foundation" || org.type === "CSR"
               ? "funder"
               : "ngo",
+          // NGO-specific fields (from org or defaults)
+          contactEmail: (org as any).contactEmail || "",
+          yearRegistered: (org as any).yearRegistered?.toString() || "",
+          beneficiaryScale: (org as any).beneficiaryScale || "",
+          needsFunding: (org as any).needsFunding || false,
+          needsMentorship: (org as any).needsMentorship || false,
+          needsInfrastructure: (org as any).needsInfrastructure || false,
+          needsPilots: (org as any).needsPilots || false,
         });
 
         setCurrentStep(1);
@@ -188,7 +212,7 @@ export default function OrgSubmit() {
 
     setIsSubmitting(true);
     try {
-      const payload = {
+      const payload: any = {
         name: formData.name,
         type: formData.type,
         website: formData.website,
@@ -199,6 +223,17 @@ export default function OrgSubmit() {
         description: formData.description,
         fundingType: formData.fundingType,
       };
+
+      // Add NGO-specific fields
+      if (formData.userRole === "ngo") {
+        payload.contactEmail = formData.contactEmail;
+        payload.yearRegistered = formData.yearRegistered ? parseInt(formData.yearRegistered) : null;
+        payload.beneficiaryScale = formData.beneficiaryScale;
+        payload.needsFunding = formData.needsFunding;
+        payload.needsMentorship = formData.needsMentorship;
+        payload.needsInfrastructure = formData.needsInfrastructure;
+        payload.needsPilots = formData.needsPilots;
+      }
 
       const result =
         isEditMode && id
@@ -610,6 +645,121 @@ export default function OrgSubmit() {
                           className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                       </div>
+
+                      {/* Contact Email - NGO Specific */}
+                      {formData.userRole === "ngo" && (
+                        <div>
+                          <label className="block text-sm font-medium text-foreground mb-2">
+                            Official Contact Email <span className="text-destructive">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            value={formData.contactEmail}
+                            onChange={(e) => handleInputChange("contactEmail", e.target.value)}
+                            placeholder="contact@yourorg.org"
+                            className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">Partners will use this to reach you.</p>
+                        </div>
+                      )}
+
+                      {/* Year Registered - NGO Specific */}
+                      {formData.userRole === "ngo" && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Year Registered
+                            </label>
+                            <input
+                              type="number"
+                              value={formData.yearRegistered}
+                              onChange={(e) => handleInputChange("yearRegistered", e.target.value)}
+                              placeholder="e.g., 2015"
+                              min="1900"
+                              max={new Date().getFullYear()}
+                              className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Beneficiary Scale
+                            </label>
+                            <select
+                              value={formData.beneficiaryScale}
+                              onChange={(e) => handleInputChange("beneficiaryScale", e.target.value)}
+                              className="w-full px-4 py-3 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
+                            >
+                              <option value="">Select scale</option>
+                              <option value="<100">Less than 100</option>
+                              <option value="100-500">100 - 500</option>
+                              <option value="500-1000">500 - 1,000</option>
+                              <option value="1000-5000">1,000 - 5,000</option>
+                              <option value="5000-10000">5,000 - 10,000</option>
+                              <option value=">10000">More than 10,000</option>
+                            </select>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* What NGO Needs - NGO Specific */}
+                      {formData.userRole === "ngo" && (
+                        <div>
+                          <label className="block text-sm font-medium text-foreground mb-3">
+                            What does your organization need?
+                          </label>
+                          <p className="text-xs text-muted-foreground mb-4">Select all that apply. This helps partners understand how they can support you.</p>
+                          <div className="grid grid-cols-2 gap-3">
+                            <label className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${formData.needsFunding ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+                              <input
+                                type="checkbox"
+                                checked={formData.needsFunding}
+                                onChange={(e) => handleInputChange("needsFunding", e.target.checked)}
+                                className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
+                              />
+                              <div>
+                                <div className="font-medium text-sm">💰 Funding</div>
+                                <div className="text-xs text-muted-foreground">Grants, donations</div>
+                              </div>
+                            </label>
+                            <label className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${formData.needsMentorship ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+                              <input
+                                type="checkbox"
+                                checked={formData.needsMentorship}
+                                onChange={(e) => handleInputChange("needsMentorship", e.target.checked)}
+                                className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
+                              />
+                              <div>
+                                <div className="font-medium text-sm">🎯 Mentorship</div>
+                                <div className="text-xs text-muted-foreground">Guidance, expertise</div>
+                              </div>
+                            </label>
+                            <label className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${formData.needsInfrastructure ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+                              <input
+                                type="checkbox"
+                                checked={formData.needsInfrastructure}
+                                onChange={(e) => handleInputChange("needsInfrastructure", e.target.checked)}
+                                className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
+                              />
+                              <div>
+                                <div className="font-medium text-sm">🏗️ Infrastructure</div>
+                                <div className="text-xs text-muted-foreground">Space, equipment</div>
+                              </div>
+                            </label>
+                            <label className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${formData.needsPilots ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
+                              <input
+                                type="checkbox"
+                                checked={formData.needsPilots}
+                                onChange={(e) => handleInputChange("needsPilots", e.target.checked)}
+                                className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
+                              />
+                              <div>
+                                <div className="font-medium text-sm">🚀 Pilots</div>
+                                <div className="text-xs text-muted-foreground">Partnerships, trials</div>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Mission / Description */}
                       <div>
