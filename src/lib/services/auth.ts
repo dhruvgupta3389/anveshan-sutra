@@ -81,7 +81,7 @@ export async function signUpWithPassword(
     email: string,
     password: string,
     name: string
-): Promise<{ user: AuthUser | null; error: string | null }> {
+): Promise<{ user: AuthUser | null; error: string | null; errorCode?: string }> {
     try {
         if (!supabase) {
             return { user: null, error: 'Supabase not configured' };
@@ -103,7 +103,31 @@ export async function signUpWithPassword(
 
         if (error) {
             console.error('Signup error:', error);
+
+            // Check for duplicate user error
+            const errorMessage = error.message.toLowerCase();
+            if (errorMessage.includes('user already registered') ||
+                errorMessage.includes('already been registered') ||
+                errorMessage.includes('already exists') ||
+                error.message.includes('User already registered')) {
+                return {
+                    user: null,
+                    error: 'This email is already registered. Please sign in instead.',
+                    errorCode: 'USER_EXISTS'
+                };
+            }
+
             return { user: null, error: error.message };
+        }
+
+        // Supabase returns a user with identities: [] if the user already exists
+        // This is a "fake" signup response - the user wasn't actually created
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+            return {
+                user: null,
+                error: 'This email is already registered. Please sign in instead.',
+                errorCode: 'USER_EXISTS'
+            };
         }
 
         if (!data.user) {

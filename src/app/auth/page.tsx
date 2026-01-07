@@ -26,6 +26,7 @@ function AuthPageContent() {
     const [step, setStep] = useState<AuthStep>("form");
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [isInfoMessage, setIsInfoMessage] = useState(false); // For showing info instead of error (e.g., user already exists)
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -105,13 +106,23 @@ function AuthPageContent() {
         }
         setIsLoading(true);
         setErrorMessage("");
+        setIsInfoMessage(false);
         try {
             const result = await verifyOtp(email, otp);
             if (result.success) {
                 if (mode === "signup") {
                     const signupResult = await signUpWithPassword(email, password, name);
                     if (signupResult.error) {
-                        setErrorMessage(signupResult.error);
+                        // Check if user already exists - switch to login mode with a helpful message
+                        if (signupResult.errorCode === 'USER_EXISTS') {
+                            setStep("form");
+                            setMode("login");
+                            setErrorMessage("This email is already registered. Please sign in with your password.");
+                            setIsInfoMessage(true);
+                            setOtp("");
+                        } else {
+                            setErrorMessage(signupResult.error);
+                        }
                     } else {
                         await refreshUser();
                         router.push(returnTo);
@@ -209,13 +220,13 @@ function AuthPageContent() {
                             >
                                 <div className="flex gap-2 mb-6">
                                     <button
-                                        onClick={() => { setMode("signup"); setErrorMessage(""); }}
+                                        onClick={() => { setMode("signup"); setErrorMessage(""); setIsInfoMessage(false); }}
                                         className={`flex-1 py-2 rounded-lg font-medium transition ${mode === "signup" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
                                     >
                                         Sign Up
                                     </button>
                                     <button
-                                        onClick={() => { setMode("login"); setErrorMessage(""); }}
+                                        onClick={() => { setMode("login"); setErrorMessage(""); setIsInfoMessage(false); }}
                                         className={`flex-1 py-2 rounded-lg font-medium transition ${mode === "login" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
                                     >
                                         Sign In
@@ -223,8 +234,11 @@ function AuthPageContent() {
                                 </div>
 
                                 {errorMessage && (
-                                    <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-950/30 text-red-600 rounded-lg mb-4">
-                                        <AlertCircle className="w-4 h-4" />
+                                    <div className={`flex items-center gap-2 p-3 rounded-lg mb-4 ${isInfoMessage
+                                        ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400'
+                                        : 'bg-red-50 dark:bg-red-950/30 text-red-600'
+                                        }`}>
+                                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
                                         <span className="text-sm">{errorMessage}</span>
                                     </div>
                                 )}
