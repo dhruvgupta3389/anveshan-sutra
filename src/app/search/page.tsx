@@ -93,8 +93,8 @@ function generateMatchReasons(
 function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  const { role, hasOrganization } = useUserStore();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { role, hasOrganization, interestAreas } = useUserStore();
   const { needsSetup, showSetupPrompt } = useAccessCheck();
   const [results, setResults] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(false);
@@ -114,6 +114,14 @@ function SearchContent() {
     setDismissedSetupPrompt(localStorage.getItem("dismissedIncubatorSetup") === "true");
     setShowGuidedIntro(localStorage.getItem("dismissedGuidedIntro") !== "true");
   }, []);
+
+  // *** AUTHENTICATION REDIRECT ***
+  // Block access for non-authenticated users
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push('/auth?returnTo=/search');
+    }
+  }, [authLoading, isAuthenticated, router]);
 
   const dismissGuidedIntro = () => {
     setShowGuidedIntro(false);
@@ -138,12 +146,13 @@ function SearchContent() {
     setError(null);
 
     try {
+      // Pass user interests for personalized alignment scoring
       const data = await searchOrganizations({
         query: query.trim() || undefined,
         focusArea: selectedFocusArea || undefined,
         region: selectedRegion || undefined,
         sortBy: sortBy,
-      });
+      }, interestAreas);
 
       if (!data.success) {
         throw new Error("Search failed");
@@ -165,7 +174,7 @@ function SearchContent() {
     } finally {
       setLoading(false);
     }
-  }, [query, selectedFocusArea, selectedRegion, sortBy]);
+  }, [query, selectedFocusArea, selectedRegion, sortBy, interestAreas]);
 
   // Debounced search effect
   useEffect(() => {
@@ -552,6 +561,12 @@ function SearchContent() {
                             <div className="flex flex-wrap gap-2 mb-3">
                               <Badge variant="secondary">{org.type}</Badge>
                               <Badge variant="outline">{org.region}</Badge>
+                              {/* Best Match badge for 80%+ alignment */}
+                              {org.alignmentScore >= 80 && (
+                                <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0">
+                                  ✨ Best Match
+                                </Badge>
+                              )}
                               {org.verificationStatus && (
                                 <Badge
                                   variant={

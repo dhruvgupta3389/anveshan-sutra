@@ -85,6 +85,61 @@ function calculateAlignmentScore(org: Organization, params: SearchParams): numbe
 }
 
 /**
+ * Calculate personalized alignment score based on user's interest areas
+ * This gives higher scores to orgs with matching focus areas
+ */
+function calculatePersonalizedAlignment(org: Organization, userInterests: string[], params: SearchParams): number {
+    // If no user interests, fall back to standard calculation
+    if (!userInterests || userInterests.length === 0) {
+        return calculateAlignmentScore(org, params);
+    }
+
+    let score = 40; // Lower base score - let matching drive the score up
+
+    // Calculate focus area overlap - primary scoring factor
+    if (org.focusAreas && org.focusAreas.length > 0) {
+        const matchingAreas = org.focusAreas.filter(area =>
+            userInterests.some(interest =>
+                interest.toLowerCase() === area.toLowerCase()
+            )
+        );
+
+        // +15 points per matching area, max +45
+        score += Math.min(45, matchingAreas.length * 15);
+
+        // Bonus for having multiple matching areas (synergy)
+        if (matchingAreas.length >= 2) {
+            score += 5;
+        }
+    }
+
+    // Region match from search params
+    if (params.region && org.region) {
+        const regionMatch = org.region.toLowerCase().includes(params.region.toLowerCase());
+        if (regionMatch) score += 10;
+    }
+
+    // Verification boost
+    if (org.verificationStatus === "verified") {
+        score += 10;
+    }
+
+    // Filter focus area match (additional boost if user is also filtering)
+    if (params.focusArea) {
+        const filterMatch = org.focusAreas.some(
+            (area) => area.toLowerCase() === params.focusArea?.toLowerCase()
+        );
+        if (filterMatch) score += 5;
+    }
+
+    // Apply confidence factor (minimal impact)
+    const confidenceFactor = (org.confidence || 75) / 100;
+    score = Math.round(score * (0.85 + 0.15 * confidenceFactor));
+
+    return Math.min(100, Math.max(0, Math.round(score)));
+}
+
+/**
  * Filter organizations based on search parameters
  */
 function filterOrganizations(orgs: Organization[], params: SearchParams): Organization[] {
@@ -247,7 +302,7 @@ export async function getOrganizationById(id: string): Promise<SearchResult | nu
 /**
  * Search organizations with filters
  */
-export async function searchOrganizations(params: SearchParams): Promise<{
+export async function searchOrganizations(params: SearchParams, userInterests?: string[]): Promise<{
     success: boolean;
     results: SearchResult[];
     total: number;
@@ -279,10 +334,12 @@ export async function searchOrganizations(params: SearchParams): Promise<{
         // Filter organizations
         const filtered = filterOrganizations(orgsForFilter, params);
 
-        // Map to search results with alignment scores
+        // Map to search results with personalized alignment scores
         const results: SearchResult[] = filtered.map((org) => ({
             ...org,
-            alignmentScore: calculateAlignmentScore(org, params),
+            alignmentScore: userInterests && userInterests.length > 0
+                ? calculatePersonalizedAlignment(org, userInterests, params)
+                : calculateAlignmentScore(org, params),
         }));
 
         // Sort results

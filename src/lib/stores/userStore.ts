@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 export type UserRole = 'ngo' | 'incubator' | 'csr' | null;
 export type UserIntent = 'seeker' | 'provider' | 'both' | null;
-export type OnboardingStep = 'personal_info' | 'role_selection' | 'org_form' | 'complete';
+export type OnboardingStep = 'personal_info' | 'role_selection' | 'interest_selection' | 'org_form' | 'complete';
 
 interface UserState {
     // Role + Intent
@@ -16,6 +16,7 @@ interface UserState {
     onboardingStep: OnboardingStep;
     userName: string | null;
     userPhone: string | null;
+    interestAreas: string[];
 
     // Actions
     setRole: (role: UserRole) => void;
@@ -25,6 +26,7 @@ interface UserState {
     setHasOrganization: (has: boolean) => void;
     setOnboardingStep: (step: OnboardingStep) => void;
     setPersonalInfo: (name: string, phone: string) => void;
+    setInterestAreas: (areas: string[]) => void;
 
     // Helpers
     isOnboarded: () => boolean;
@@ -60,6 +62,7 @@ export const useUserStore = create<UserState>()(
             onboardingStep: 'personal_info' as OnboardingStep,
             userName: null,
             userPhone: null,
+            interestAreas: [],
 
             // Actions
             setRole: (role) => set({ role, intent: null }), // Reset intent when role changes
@@ -85,6 +88,7 @@ export const useUserStore = create<UserState>()(
             setHasOrganization: (has) => set({ hasOrganization: has }),
             setOnboardingStep: (step) => set({ onboardingStep: step }),
             setPersonalInfo: (name, phone) => set({ userName: name, userPhone: phone }),
+            setInterestAreas: (areas) => set({ interestAreas: areas }),
 
             // Helpers
             isOnboarded: () => {
@@ -128,6 +132,7 @@ export const useUserStore = create<UserState>()(
                 onboardingStep: state.onboardingStep,
                 userName: state.userName,
                 userPhone: state.userPhone,
+                interestAreas: state.interestAreas,
             }),
         }
     )

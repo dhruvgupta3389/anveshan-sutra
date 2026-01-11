@@ -933,3 +933,46 @@ ALTER TABLE organizations ADD COLUMN IF NOT EXISTS engagement_types TEXT[];
 ALTER TABLE organizations ADD COLUMN IF NOT EXISTS budget_range TEXT;
 ALTER TABLE organizations ADD COLUMN IF NOT EXISTS requires_past_experience BOOLEAN DEFAULT false;
 ALTER TABLE organizations ADD COLUMN IF NOT EXISTS csr_platform_expectations TEXT[];
+
+-- ============================================
+-- USER INTEREST AREAS FOR PERSONALIZED MATCHING
+-- ============================================
+ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS interest_areas TEXT[];
+CREATE INDEX IF NOT EXISTS idx_user_interests ON user_profiles USING GIN(interest_areas);
+
+-- ============================================
+-- USER ORGANIZATIONS JUNCTION TABLE
+-- Links users to their organizations
+-- ============================================
+CREATE TABLE IF NOT EXISTS user_organizations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    organization_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+    role TEXT DEFAULT 'owner' CHECK (role IN ('owner', 'admin', 'member')),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(user_id, organization_id)
+);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_user_orgs_user_id ON user_organizations(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_orgs_org_id ON user_organizations(organization_id);
+
+-- Enable RLS
+ALTER TABLE user_organizations ENABLE ROW LEVEL SECURITY;
+
+-- Users can view their own organization links
+CREATE POLICY "Users can view own organization links" ON user_organizations
+    FOR SELECT USING (auth.uid() = user_id);
+
+-- Users can create their own organization links
+CREATE POLICY "Users can create own organization links" ON user_organizations
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Users can update their own organization links
+CREATE POLICY "Users can update own organization links" ON user_organizations
+    FOR UPDATE USING (auth.uid() = user_id);
+
+-- Users can delete their own organization links
+CREATE POLICY "Users can delete own organization links" ON user_organizations
+    FOR DELETE USING (auth.uid() = user_id);

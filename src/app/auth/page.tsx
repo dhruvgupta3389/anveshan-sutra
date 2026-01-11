@@ -125,7 +125,8 @@ function AuthPageContent() {
                         }
                     } else {
                         await refreshUser();
-                        router.push(returnTo);
+                        // NEW SIGNUPS: Always go directly to onboarding - no exceptions
+                        router.push('/onboarding');
                     }
                 } else if (mode === "forgot_password") {
                     setStep("reset_password");

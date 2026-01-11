@@ -2,13 +2,14 @@
 
 import { supabase } from '@/lib/supabase';
 
-export type OnboardingStep = 'personal_info' | 'role_selection' | 'org_form' | 'complete';
+export type OnboardingStep = 'personal_info' | 'role_selection' | 'interest_selection' | 'org_form' | 'complete';
 
 export interface OnboardingStatus {
     step: OnboardingStep;
     name: string | null;
     phone: string | null;
     role: string | null;
+    interestAreas: string[];
     hasOrganization: boolean;
 }
 
@@ -22,7 +23,7 @@ export async function getOnboardingStatus(userId: string): Promise<OnboardingSta
         // Get user profile
         const { data: profile, error: profileError } = await supabase
             .from('user_profiles')
-            .select('name, phone, user_role, onboarding_step')
+            .select('name, phone, user_role, onboarding_step, interest_areas')
             .eq('id', userId)
             .single();
 
@@ -46,6 +47,7 @@ export async function getOnboardingStatus(userId: string): Promise<OnboardingSta
             name: profile?.name || null,
             phone: profile?.phone || null,
             role: profile?.user_role || null,
+            interestAreas: profile?.interest_areas || [],
             hasOrganization,
         };
     } catch (error) {
@@ -110,7 +112,7 @@ export async function saveRole(
             .from('user_profiles')
             .update({
                 user_role: role,
-                onboarding_step: 'org_form',
+                onboarding_step: 'interest_selection',
                 updated_at: new Date().toISOString(),
             })
             .eq('id', userId);
@@ -123,6 +125,39 @@ export async function saveRole(
         return { success: true };
     } catch (error: any) {
         console.error('Save role error:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Save selected interests (Step 3)
+ */
+export async function saveInterests(
+    userId: string,
+    interests: string[]
+): Promise<{ success: boolean; error?: string }> {
+    if (!supabase) {
+        return { success: false, error: 'Database not configured' };
+    }
+
+    try {
+        const { error } = await supabase
+            .from('user_profiles')
+            .update({
+                interest_areas: interests,
+                onboarding_step: 'org_form',
+                updated_at: new Date().toISOString(),
+            })
+            .eq('id', userId);
+
+        if (error) {
+            console.error('Error saving interests:', error);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true };
+    } catch (error: any) {
+        console.error('Save interests error:', error);
         return { success: false, error: error.message };
     }
 }
